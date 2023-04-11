@@ -49,3 +49,31 @@ func GetItem(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, resultItem)
 }
+
+func GetAllItems(ctx echo.Context) error {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return ctx.String(http.StatusBadRequest, "Ошибка доступа к БД"+err.Error())
+	}
+	rows, err := db.GetAllItems()
+	if err != nil {
+		return ctx.String(http.StatusBadRequest, "Ошибка получения данных "+err.Error())
+	}
+	itemsArr := make([]models.ItemJson, 0, 256)
+	i := 0
+	for rows.Next() {
+		itemsArr = append(itemsArr, models.ItemJson{})
+		err = rows.Scan(
+			&itemsArr[i].Id, &itemsArr[i].Name,
+			&itemsArr[i].Descriptions, &itemsArr[i].Category_id,
+			&itemsArr[i].Category_name, &itemsArr[i].Price_for_unit,
+			&itemsArr[i].Dimension)
+		if err != nil {
+			return ctx.String(http.StatusBadRequest, "ошибка получения данных "+err.Error())
+		}
+		i++
+	}
+	return ctx.JSON(http.StatusOK, echo.Map{"allItems": itemsArr})
+}
+
+func UpdateItem(ctx echo.Context) error {}

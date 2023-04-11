@@ -10,6 +10,7 @@ func main() {
 
 	server.AddRoute("/check/additem", "POST", "", transport.CreateItem)
 	server.AddRoute("/api/get/:id", "GET", "", transport.GetItem)
+	server.AddRoute("/api/getall", "GET", "", transport.GetAllItems)
 
 	server.Start()
 }
