@@ -32,6 +32,5 @@ func main() {
 	proxyServer.AddRoute("", "POST", "/additem", echo.WrapHandler(itemAuthProxy))
 	proxyServer.AddRoute("", "GET", "/get/:id", echo.WrapHandler(itemNotauthProxy))
 	proxyServer.AddRoute("", "GET", "/getall", echo.WrapHandler(itemNotauthProxy))
-
-	proxyServer.Start()
+	proxyServer.StartProxy()
 }

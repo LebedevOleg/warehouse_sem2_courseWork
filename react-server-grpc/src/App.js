@@ -1,12 +1,39 @@
 import "./App.css";
+import { AuthContext } from "./context/auth.context";
+import { useAuth } from "./hooks/auth.hook";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/homePage/homePage";
+import NavBar from "./components/nav-bar/nav_bar";
 
 function App() {
+	const { token, login, logout, ready } = useAuth();
+	const isAuthent = !!token;
+
+	if (!ready) {
+		return (
+			<div>
+				<p>Loading...</p>
+			</div>
+		);
+	}
 	return (
-		<div className="App">
-			<input></input>
-			<input></input>
-			<input></input>
-		</div>
+		<AuthContext.Provider
+			value={{
+				token,
+				login,
+				logout,
+				isAuthent,
+			}}
+		>
+			<NavBar />
+			<div className="container">
+				<BrowserRouter>
+					<Routes>
+						<Route exact path="/" element={<HomePage />} />
+					</Routes>
+				</BrowserRouter>
+			</div>
+		</AuthContext.Provider>
 	);
 }
 

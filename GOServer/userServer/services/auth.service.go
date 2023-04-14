@@ -34,7 +34,8 @@ func Login(user *models.UserJson) (string, error) {
 	var password string
 	var email string
 	var uType string
-	err = row.Scan(&email, &password, &uType)
+	var id int
+	err = row.Scan(&id, &email, &password, &uType)
 	if err != nil {
 		return "", errors.New("get user error\n" + err.Error())
 	}
@@ -42,6 +43,7 @@ func Login(user *models.UserJson) (string, error) {
 		return "", errors.New("password unmatch\n")
 	}
 	claims := &models.UserJwt{
+		id,
 		email,
 		uType,
 		jwt.RegisteredClaims{ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 4))},

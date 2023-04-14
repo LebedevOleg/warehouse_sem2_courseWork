@@ -26,6 +26,7 @@ func (u *UserJson) CheckPasswordHash(password string) bool {
 }
 
 type UserJwt struct {
+	Id    int    `json:"id"`
 	Email string `json:"email"`
 	UType string `json:"user_type"`
 	jwt.RegisteredClaims

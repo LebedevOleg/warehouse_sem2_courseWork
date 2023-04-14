@@ -45,6 +45,6 @@ func (p *UserDB) CreateUser(u models.UserJson) error {
 }
 
 func (p *UserDB) GetUser(u models.UserJson) *sql.Row {
-	row := p.Db.QueryRow(`SELECT email, password, t.name FROM users, user_types t where type_id = t.id and email = $1`, u.Email)
+	row := p.Db.QueryRow(`SELECT users.id, email, password, t.name FROM users, user_types t where type_id = t.id and email = $1`, u.Email)
 	return row
 }

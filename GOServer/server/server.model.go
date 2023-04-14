@@ -20,6 +20,14 @@ func (s *Server) Start() {
 	s.echoServer.Use(middleware.Logger())
 	s.echoServer.Logger.Fatal(s.echoServer.Start(s.address))
 }
+func (s *Server) StartProxy() {
+	s.echoServer.Use(middleware.Recover())
+	s.echoServer.Use(middleware.CORS())
+	s.echoServer.Use(middleware.Gzip())
+	s.echoServer.Use(middleware.RequestID())
+	s.echoServer.Use(middleware.Logger())
+	s.echoServer.Logger.Fatal(s.echoServer.Start(s.address))
+}
 
 //type echoRoute func(echo.Context) error
 
