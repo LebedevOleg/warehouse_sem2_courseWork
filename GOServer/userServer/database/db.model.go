@@ -35,13 +35,13 @@ type UserDB struct {
 	database.Postgresql
 }
 
-func (p *UserDB) CreateUser(u models.UserJson) error {
+func (p *UserDB) CreateUser(u models.UserJson) (*sql.Row, error) {
 	_, err := p.Db.Exec("INSERT into users (name, password, email) VALUES ($1, $2, $3)",
 		u.Name, u.Password, u.Email)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return p.GetUser(u), nil
 }
 
 func (p *UserDB) GetUser(u models.UserJson) *sql.Row {

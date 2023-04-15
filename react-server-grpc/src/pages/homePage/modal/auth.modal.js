@@ -41,7 +41,7 @@ const SignModal = () => {
 			)
 			.then((res) => {
 				console.log(res.data);
-				auth.login(res.data.token);
+				auth.login(res.data.token, res.data.role);
 				window.location.reload();
 			})
 			.catch((err) => {

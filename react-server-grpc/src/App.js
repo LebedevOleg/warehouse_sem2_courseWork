@@ -6,7 +6,7 @@ import HomePage from "./pages/homePage/homePage";
 import NavBar from "./components/nav-bar/nav_bar";
 
 function App() {
-	const { token, login, logout, ready } = useAuth();
+	const { token, userRole, login, isAdmin, logout, ready } = useAuth();
 	const isAuthent = !!token;
 
 	if (!ready) {
@@ -19,7 +19,9 @@ function App() {
 	return (
 		<AuthContext.Provider
 			value={{
+				isAdmin,
 				token,
+				userRole,
 				login,
 				logout,
 				isAuthent,

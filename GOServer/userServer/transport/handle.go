@@ -16,11 +16,14 @@ func Registr(ctx echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	err = services.Register(user)
+	t, role, err := services.Register(user)
 	if err != nil {
 		return ctx.String(http.StatusBadRequest, err.Error())
 	}
-	return ctx.JSON(http.StatusCreated, user)
+	return ctx.JSON(http.StatusCreated, echo.Map{
+		"token": t,
+		"role":  role,
+	})
 }
 
 /* err = user.HashPassword()
@@ -39,12 +42,13 @@ func Login(ctx echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	t, err := services.Login(user)
+	t, role, err := services.Login(user)
 	if err != nil {
 		return ctx.String(http.StatusBadRequest, err.Error())
 	}
-	return ctx.JSON(http.StatusCreated, echo.Map{
+	return ctx.JSON(http.StatusAccepted, echo.Map{
 		"token": t,
+		"role":  role,
 	})
 }
 

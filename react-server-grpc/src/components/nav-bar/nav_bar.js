@@ -13,7 +13,7 @@ import { useAuth } from "../../hooks/auth.hook";
 import SignModal from "../../pages/homePage/modal/auth.modal";
 
 const NavBar = () => {
-	const { token } = useAuth();
+	const { token, isAdmin } = useAuth();
 
 	return (
 		<>
