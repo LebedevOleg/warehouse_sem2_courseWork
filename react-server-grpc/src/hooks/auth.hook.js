@@ -14,7 +14,14 @@ export const useAuth = () => {
 		setUserRole(role);
 		setIsAdmin(role === "Администратор");
 		setToken(t);
-		localStorage.setItem(storage, JSON.stringify({ token: t }));
+		localStorage.setItem(
+			storage,
+			JSON.stringify({
+				token: t,
+				role: role,
+				isAdmin: role === "Администратор",
+			})
+		);
 	}, []);
 
 	const logout = useCallback(() => {

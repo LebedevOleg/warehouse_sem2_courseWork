@@ -44,7 +44,11 @@ func (p *UserDB) CreateUser(u models.UserJson) (*sql.Row, error) {
 	return p.GetUser(u), nil
 }
 
+func (p *UserDB) UpdateUser(u models.UserJson) *sql.Row {
+	p.Db.Exec(`UPDATE users SET name = $1, email = $2, password =$3, role = $4`, u.Name, u.Email, u.Password, u.Role)
+}
+
 func (p *UserDB) GetUser(u models.UserJson) *sql.Row {
-	row := p.Db.QueryRow(`SELECT users.id, email, password, t.name FROM users, user_types t where type_id = t.id and email = $1`, u.Email)
+	row := p.Db.QueryRow(`SELECT users.id, email, password, r.name FROM users, user_roles r where role_id = r.id and email = $1`, u.Email)
 	return row
 }

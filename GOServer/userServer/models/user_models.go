@@ -9,6 +9,8 @@ type UserJson struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"pass"`
+	Role     string `json:"role"`
+	Type     string `json:"type"`
 }
 
 func (u *UserJson) HashPassword() error {

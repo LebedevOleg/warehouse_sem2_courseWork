@@ -4,6 +4,9 @@ import { useAuth } from "./hooks/auth.hook";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/homePage/homePage";
 import NavBar from "./components/nav-bar/nav_bar";
+import ShopPage from "./pages/shopPage/shopPage";
+import ServicePage from "./pages/servicePages/servicePage";
+import ItemServicePage from "./pages/servicePages/itemsServicePage/itemServicePage";
 
 function App() {
 	const { token, userRole, login, isAdmin, logout, ready } = useAuth();
@@ -32,6 +35,17 @@ function App() {
 				<BrowserRouter>
 					<Routes>
 						<Route exact path="/" element={<HomePage />} />
+						<Route exact path="/shop" element={<ShopPage />} />
+						<Route
+							exact
+							path="/service/items"
+							element={<ItemServicePage />}
+						/>
+						<Route
+							exact
+							path="/service"
+							element={<ServicePage />}
+						/>
 					</Routes>
 				</BrowserRouter>
 			</div>

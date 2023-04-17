@@ -12,7 +12,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import PasswordIcon from "@mui/icons-material/Password";
 import { Box } from "@mui/system";
 import React, { useContext } from "react";
-import { AuthContext } from "../../../context/auth.context";
+import { AuthContext } from "../../context/auth.context";
 import TabList from "@mui/lab/TabList";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
