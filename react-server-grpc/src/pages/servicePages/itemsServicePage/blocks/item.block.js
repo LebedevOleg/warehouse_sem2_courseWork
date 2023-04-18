@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 
 import React from "react";
+import ItemChangeModal from "../modal/itemChange.modal";
 
 const ItemServiceBlock = (props) => {
 	return (
@@ -28,7 +29,7 @@ const ItemServiceBlock = (props) => {
 				Цена за единицу: {props.product.pfu}
 			</TableCell>
 			<TableCell align="center">
-				<Button>Изменить</Button>
+				<ItemChangeModal item={props.product} />
 				<Button>Удалить</Button>
 			</TableCell>
 		</TableRow>

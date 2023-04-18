@@ -30,7 +30,9 @@ func main() {
 	proxyServer.AddRoute("", "POST", "/login", echo.WrapHandler(userProxy))
 	proxyServer.AddRoute("", "POST", "/registr", echo.WrapHandler(userProxy))
 	proxyServer.AddRoute("", "POST", "/additem", echo.WrapHandler(itemAuthProxy))
+	proxyServer.AddRoute("", "POST", "/updateitem", echo.WrapHandler(itemAuthProxy))
 	proxyServer.AddRoute("", "GET", "/get/:id", echo.WrapHandler(itemNotauthProxy))
-	proxyServer.AddRoute("", "GET", "/getall", echo.WrapHandler(itemNotauthProxy))
+	proxyServer.AddRoute("", "GET", "/getallitems", echo.WrapHandler(itemNotauthProxy))
+	proxyServer.AddRoute("", "GET", "/getallcategories", echo.WrapHandler(itemNotauthProxy))
 	proxyServer.StartProxy()
 }

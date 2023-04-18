@@ -42,3 +42,25 @@ func GetAllItems(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, echo.Map{"allItems": items})
 }
+
+func GetItemCategories(ctx echo.Context) error {
+	categories, err := services.GetAllCategories()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, echo.Map{"categories": categories})
+}
+
+func UpdateItem(ctx echo.Context) error {
+	item := new(models.ItemJson)
+	err := ctx.Bind(item)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	err = services.UpdateItem(item)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return ctx.JSON(http.StatusOK,
+		echo.Map{"message": "Updated successfully", "item": item})
+}

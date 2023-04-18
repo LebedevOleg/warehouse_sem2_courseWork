@@ -15,7 +15,7 @@ const ShopPage = () => {
 	const [products, setProducts] = React.useState([]);
 
 	const GetAllProducts = useCallback(async () => {
-		await axios.get("http://localhost:8000/getall").then((res) => {
+		await axios.get("http://localhost:8000/getallitems").then((res) => {
 			setProducts(res.data.allItems);
 		});
 	}, []);

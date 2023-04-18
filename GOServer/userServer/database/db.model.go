@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"practice2sem/server/database"
 	"practice2sem/userServer/models"
 
@@ -44,8 +45,13 @@ func (p *UserDB) CreateUser(u models.UserJson) (*sql.Row, error) {
 	return p.GetUser(u), nil
 }
 
-func (p *UserDB) UpdateUser(u models.UserJson) *sql.Row {
-	p.Db.Exec(`UPDATE users SET name = $1, email = $2, password =$3, role = $4`, u.Name, u.Email, u.Password, u.Role)
+// todo: check
+func (p *UserDB) UpdateUser(u models.UserJson) error {
+	_, err := p.Db.Exec(`UPDATE users SET name = $1, email = $2, password =$3, role = $4`, u.Name, u.Email, u.Password, u.Role)
+	if err != nil {
+		return errors.New("Error updating user " + err.Error())
+	}
+	return nil
 }
 
 func (p *UserDB) GetUser(u models.UserJson) *sql.Row {

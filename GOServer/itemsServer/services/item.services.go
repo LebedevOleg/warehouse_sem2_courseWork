@@ -61,3 +61,39 @@ func GetAllItems() ([]models.ItemJson, error) {
 	}
 	return itemsArr, nil
 }
+
+func GetAllCategories() ([]models.CategoryJson, error) {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return nil, errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	rows, err := db.GetAllCategories()
+	if err != nil {
+		return nil, errors.New("failed to get categories: " + err.Error())
+	}
+	categoriesArr := make([]models.CategoryJson, 0, 256)
+	i := 0
+	for rows.Next() {
+		categoriesArr = append(categoriesArr, models.CategoryJson{})
+		err = rows.Scan(
+			&categoriesArr[i].Id, &categoriesArr[i].Name,
+		)
+		if err != nil {
+			return nil, errors.New("failed to scan categories" + err.Error())
+		}
+		i++
+	}
+	return categoriesArr, nil
+}
+
+func UpdateItem(item *models.ItemJson) error {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	err = db.UpdateItem(*item)
+	if err != nil {
+		return errors.New("failed to update item: " + err.Error())
+	}
+	return nil
+}

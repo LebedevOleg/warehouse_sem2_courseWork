@@ -8,6 +8,7 @@ import {
 	TableCell,
 	Table,
 	TableBody,
+	Typography,
 } from "@mui/material";
 import ItemServiceBlock from "./blocks/item.block";
 
@@ -15,7 +16,7 @@ const ItemServicePage = () => {
 	const [products, setProducts] = useState([]);
 
 	const GetAllProducts = useCallback(async () => {
-		await axios.get("http://localhost:8000/getall").then((res) => {
+		await axios.get("http://localhost:8000/getallitems").then((res) => {
 			setProducts(res.data.allItems);
 		});
 	}, []);
@@ -25,6 +26,7 @@ const ItemServicePage = () => {
 	}, [GetAllProducts]);
 	return (
 		<>
+			<Typography variant="h3">Редактирование товаров </Typography>
 			<TableContainer component={Paper}>
 				<Table
 					sx={{ minWidth: 500 }}

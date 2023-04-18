@@ -21,7 +21,8 @@ func main() {
 	config := transport.CreateConfig("secret")
 	server.AddAdminAuth("/check", "POST", "/additem",
 		echo.WrapHandler(itemProxy), config, transport.CheckStatus("Администратор"))
-
+	server.AddAdminAuth("/check", "POST", "/updateitem",
+		echo.WrapHandler(itemProxy), config, transport.CheckStatus("Администратор"))
 	server.Start()
 
 	/* server := transport.NewServer(":8001")

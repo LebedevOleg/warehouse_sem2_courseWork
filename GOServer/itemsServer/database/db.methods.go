@@ -32,3 +32,21 @@ func (db *ItemDB) GetAllItems() (*sql.Rows, error) {
 	}
 	return rows, nil
 }
+
+func (db *ItemDB) GetAllCategories() (*sql.Rows, error) {
+	rows, err := db.Db.Query(`SELECT id, name
+        FROM item_categories`)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
+}
+
+func (db *ItemDB) UpdateItem(i models.ItemJson) error {
+	_, err := db.Db.Exec(`UPDATE items SET description = $1, price_for_unit = $2, dimension = $3, name = $4 WHERE id = $5`,
+		i.Descriptions, i.Price_for_unit, i.Dimension, i.Name, i.Id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
