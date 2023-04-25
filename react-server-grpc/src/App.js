@@ -7,6 +7,8 @@ import NavBar from "./components/nav-bar/nav_bar";
 import ShopPage from "./pages/shopPage/shopPage";
 import ServicePage from "./pages/servicePages/servicePage";
 import ItemServicePage from "./pages/servicePages/itemsServicePage/itemServicePage";
+import Loader from "./components/Loading/Loading";
+import { Box } from "@mui/material";
 
 function App() {
 	const { token, userRole, login, isAdmin, logout, ready } = useAuth();
@@ -15,10 +17,11 @@ function App() {
 	if (!ready) {
 		return (
 			<div>
-				<p>Loading...</p>
+				<Loader />
 			</div>
 		);
 	}
+
 	return (
 		<AuthContext.Provider
 			value={{
