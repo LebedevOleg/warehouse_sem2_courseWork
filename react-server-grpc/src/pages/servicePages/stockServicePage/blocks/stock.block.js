@@ -10,6 +10,7 @@ import {
 
 import React from "react";
 import ItemChangeModal from "../modal/itemChange.modal";
+import StockChangeModal from "../modal/stockChange.modal";
 
 const StockServiceBlock = (props) => {
 	return (
@@ -30,7 +31,7 @@ const StockServiceBlock = (props) => {
 				Цена за единицу: {props.product.pfu}
 			</TableCell>
 			<TableCell align="center">
-				<ItemChangeModal item={props.product} />
+				<StockChangeModal stock={props.product} />
 				<Button>Удалить</Button>
 			</TableCell>
 		</TableRow>
