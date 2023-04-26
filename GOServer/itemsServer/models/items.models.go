@@ -14,3 +14,9 @@ type CategoryJson struct {
 	Id   int64  `json:"id"`
 	Name string `json:"name"`
 }
+
+type StockJson struct {
+	Id      int64  `json:"id"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
+}

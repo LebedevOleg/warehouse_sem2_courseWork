@@ -19,6 +19,8 @@ func main() {
 		Host:   "localhost:8002",
 	})
 	config := transport.CreateConfig("secret")
+	server.AddAdminAuth("/check", "GET", "/getallstocks",
+		echo.WrapHandler(itemProxy), config, transport.CheckStatus("Администратор"))
 	server.AddAdminAuth("/check", "POST", "/additem",
 		echo.WrapHandler(itemProxy), config, transport.CheckStatus("Администратор"))
 	server.AddAdminAuth("/check", "POST", "/updateitem",

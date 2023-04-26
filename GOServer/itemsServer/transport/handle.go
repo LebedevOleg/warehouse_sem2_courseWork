@@ -64,3 +64,11 @@ func UpdateItem(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK,
 		echo.Map{"message": "Updated successfully", "item": item})
 }
+
+func GetAllStocks(ctx echo.Context) error {
+	stocks, err := services.GetAllStocks()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, echo.Map{"stocks": stocks})
+}

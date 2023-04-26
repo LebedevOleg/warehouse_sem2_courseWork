@@ -13,6 +13,6 @@ func main() {
 	server.AddRoute("/api/get/:id", "GET", "", transport.GetItem)
 	server.AddRoute("/api/getallitems", "GET", "", transport.GetAllItems)
 	server.AddRoute("/api/getallcategories", "GET", "", transport.GetItemCategories)
-
+	server.AddRoute("/check/getallstocks", "GET", "", transport.GetAllStocks)
 	server.Start()
 }

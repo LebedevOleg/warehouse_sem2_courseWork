@@ -50,3 +50,11 @@ func (db *ItemDB) UpdateItem(i models.ItemJson) error {
 	}
 	return nil
 }
+
+func (db *ItemDB) AllStocks() (*sql.Rows, error) {
+	rows, err := db.Db.Query(`SELECT * FROM storages`)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
+}

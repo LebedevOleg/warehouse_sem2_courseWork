@@ -97,3 +97,25 @@ func UpdateItem(item *models.ItemJson) error {
 	}
 	return nil
 }
+
+func GetAllStocks() ([]models.StockJson, error) {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return nil, errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	rows, err := db.AllStocks()
+	if err != nil {
+		return nil, errors.New("failed to ret stock: " + err.Error())
+	}
+	stocks := make([]models.StockJson, 0, 256)
+	for rows.Next() {
+		stocks = append(stocks, models.StockJson{})
+		err = rows.Scan(
+			&stocks[len(stocks)-1].Id, &stocks[len(stocks)-1].Name,
+		)
+		if err != nil {
+			return nil, errors.New("failed to scan stock" + err.Error())
+		}
+	}
+	return stocks, nil
+}
