@@ -3,11 +3,14 @@ import {
 	Button,
 	FormControl,
 	InputLabel,
+	MenuItem,
 	Select,
 	Typography,
 } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import React, { createContext, useCallback, useEffect } from "react";
 import { useAuth } from "../../../hooks/auth.hook";
+import { itemContext } from "./item.Context";
+import DeliveryItemBlock from "./blocks/item.block";
 
 const DeliveryPage = () => {
 	const { token } = useAuth();
@@ -16,6 +19,8 @@ const DeliveryPage = () => {
 	});
 	const [providers, setProviders] = React.useState([]);
 	const [items, setItems] = React.useState([]);
+	const [selectedItems, setSelectedItems] = React.useState([]);
+	const [itemsCount, setItemsCount] = React.useState(0);
 
 	const handleChangeDeliver = (e) => {
 		setDeliveries({
@@ -42,10 +47,23 @@ const DeliveryPage = () => {
 						id="provider"
 						name="provider"
 						onChange={handleChangeDeliver}
-					></Select>
+					>
+						{providers.map((provider) => (
+							<MenuItem value={provider.id}>
+								{provider.name}
+							</MenuItem>
+						))}
+					</Select>
 				</FormControl>
 				<Button>Добавить нового поставщика</Button>
 			</Box>
+			<Button>Добавить товар в накладную</Button>
+			<Button>Удалить товар из накладной</Button>
+			<itemContext.Provider value={[selectedItems, setSelectedItems]}>
+				{selectedItems.map((item) => (
+					<DeliveryItemBlock items={items} />
+				))}
+			</itemContext.Provider>
 			<Box>
 				<FormControl>
 					<InputLabel>Товары</InputLabel>
@@ -54,7 +72,11 @@ const DeliveryPage = () => {
 						id="items"
 						name="items"
 						onChange={handleChangeDeliver}
-					></Select>
+					>
+						{items.map((item) => (
+							<MenuItem value={item.id}>{item.name}</MenuItem>
+						))}
+					</Select>
 				</FormControl>
 			</Box>
 			<Box>

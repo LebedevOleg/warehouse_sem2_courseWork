@@ -7,6 +7,7 @@ import {
 	DialogContent,
 	DialogContentText,
 	TextField,
+	Typography,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import PasswordIcon from "@mui/icons-material/Password";
@@ -80,8 +81,10 @@ const SignModal = () => {
 			<Button color="inherit" onClick={handleOpenModal}>
 				Войти/зарегистрироваться
 			</Button>
-			<Dialog open={openModal} onClose={handleCloseModal}>
-				<DialogTitle>Вход/Регистрация</DialogTitle>
+			<Dialog open={openModal} onClose={handleCloseModal} fullWidth>
+				<DialogTitle sx={{ pl: "40px", pt: "40px" }}>
+					Вход/Регистрация
+				</DialogTitle>
 
 				<Box sx={{ width: "100%", typography: "body1" }}>
 					<TabContext value={tab}>
@@ -90,7 +93,7 @@ const SignModal = () => {
 								onChange={handleChangeTabs}
 								aria-label="lab API tabs example"
 							>
-								<Tab label="Вход" value="0" />
+								<Tab label="Вход" value="0"></Tab>
 								<Tab label="Регистрация" value="1" />
 							</TabList>
 						</Box>

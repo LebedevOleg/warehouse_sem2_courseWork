@@ -8,7 +8,7 @@ import ShopPage from "./pages/shopPage/shopPage";
 import ServicePage from "./pages/servicePages/servicePage";
 import ItemServicePage from "./pages/servicePages/itemsServicePage/itemServicePage";
 import Loader from "./components/Loading/Loading";
-import DeliveryPage from "./pages/servicePages/delivery/deliveryPage";
+//import DeliveryPage from "./pages/servicePages/delivery/deliveryPage";
 
 function App() {
 	const { token, userRole, login, isAdmin, logout, ready } = useAuth();
@@ -49,11 +49,11 @@ function App() {
 							path="/service/stocks"
 							element={<ServicePage />}
 						/>
-						<Route
+						{/* <Route
 							exact
 							path="/service/delivery"
 							element={<DeliveryPage />}
-						/>
+						/> */}
 						<Route
 							exact
 							path="/service"
