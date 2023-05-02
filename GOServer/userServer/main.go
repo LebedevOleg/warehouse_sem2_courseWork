@@ -11,28 +11,31 @@ import (
 
 func main() {
 	server := serverModel.NewServer(":8001")
+	config := transport.CreateConfig("secret")
 
 	server.AddRoute("/api", "POST", "/registr", transport.Registr)
 	server.AddRoute("/api", "POST", "/login", transport.Login)
+
+	//--------------------------------routes items-auth routes------------------------------------------
 	itemProxy := httputil.NewSingleHostReverseProxy(&url.URL{
 		Scheme: "http",
 		Host:   "localhost:8002",
 	})
-	config := transport.CreateConfig("secret")
 	server.AddAdminAuth("/check", "GET", "/getallstocks",
 		echo.WrapHandler(itemProxy), config, transport.CheckStatus("Администратор"))
 	server.AddAdminAuth("/check", "POST", "/additem",
 		echo.WrapHandler(itemProxy), config, transport.CheckStatus("Администратор"))
 	server.AddAdminAuth("/check", "POST", "/updateitem",
 		echo.WrapHandler(itemProxy), config, transport.CheckStatus("Администратор"))
+
+	//--------------------------------routes transactions-auth routes------------------------------------------
+	transactionsProxy := httputil.NewSingleHostReverseProxy(&url.URL{
+		Scheme: "http",
+		Host:   "localhost:8003",
+	})
+	server.AddAdminAuth("/check", "GET", "/allproviders",
+		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
+
 	server.Start()
 
-	/* server := transport.NewServer(":8001")
-	server.AddRoute("/api", "POST", "/registr", transport.Registr)
-	server.AddRoute("/api", "POST", "/login", transport.Login)
-
-	server.AddAuth("/api", "GET", "/check", transport.CheckAuth)
-
-	server.Start()
-	*/
 }

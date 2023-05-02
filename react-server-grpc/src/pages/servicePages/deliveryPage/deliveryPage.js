@@ -7,13 +7,20 @@ import {
 	Select,
 	Typography,
 } from "@mui/material";
-import React, { createContext, useCallback, useEffect } from "react";
+import React, {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+} from "react";
 import { useAuth } from "../../../hooks/auth.hook";
 import { itemContext } from "./item.Context";
 import DeliveryItemBlock from "./blocks/item.block";
+import axios from "axios";
+import { AuthContext } from "../../../context/auth.context";
 
 const DeliveryPage = () => {
-	const { token } = useAuth();
+	const auth = useContext(AuthContext);
 	const [deliveries, setDeliveries] = React.useState({
 		provider: "",
 	});
@@ -28,8 +35,20 @@ const DeliveryPage = () => {
 			[e.target.name]: e.target.value,
 		});
 	};
-	const GetAllProviders = useCallback(async () => {}, []);
-	const GetAllItems = useCallback(async () => {}, []);
+	const GetAllProviders = useCallback(async () => {
+		await axios
+			.get("http://localhost:8000/allproviders", {
+				headers: { Authorization: `Bearer ${auth.token}` },
+			})
+			.then((res) => {
+				setProviders(res.data.providers);
+			});
+	}, []);
+	const GetAllItems = useCallback(async () => {
+		await axios.get("http://localhost:8000/getallitems").then((res) => {
+			setItems(res.data.allItems);
+		});
+	}, []);
 
 	useEffect(() => {
 		GetAllProviders();
@@ -43,6 +62,7 @@ const DeliveryPage = () => {
 				<FormControl>
 					<InputLabel>Поставщик</InputLabel>
 					<Select
+						sx={{ width: "250px" }}
 						label="Поставщик"
 						id="provider"
 						name="provider"
@@ -68,6 +88,7 @@ const DeliveryPage = () => {
 				<FormControl>
 					<InputLabel>Товары</InputLabel>
 					<Select
+						sx={{ width: "250px" }}
 						label="Товары"
 						id="items"
 						name="items"

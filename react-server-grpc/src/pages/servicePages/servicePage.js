@@ -27,7 +27,7 @@ const ServicePage = () => {
 				<Button
 					sx={{ display: "block" }}
 					onClick={() => {
-						window.location = "/shop";
+						window.location = "/service/delivery";
 					}}
 				>
 					<Typography variant="h5">Добавление поставки</Typography>

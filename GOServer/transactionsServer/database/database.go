@@ -1,6 +1,10 @@
 package database
 
-import "practice2sem/server/database"
+import (
+	"practice2sem/server/database"
+
+	_ "github.com/lib/pq"
+)
 
 const (
 	host     = "localhost"
