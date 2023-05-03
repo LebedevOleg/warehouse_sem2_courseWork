@@ -18,6 +18,7 @@ import { itemContext } from "./item.Context";
 import DeliveryItemBlock from "./blocks/item.block";
 import axios from "axios";
 import { AuthContext } from "../../../context/auth.context";
+import FullFeaturedCrudGrid from "./blocks/item.block";
 
 const DeliveryPage = () => {
 	const auth = useContext(AuthContext);
@@ -25,6 +26,7 @@ const DeliveryPage = () => {
 		provider: "",
 	});
 	const [providers, setProviders] = React.useState([]);
+
 	const [items, setItems] = React.useState([]);
 	const [selectedItems, setSelectedItems] = React.useState([]);
 	const [itemsCount, setItemsCount] = React.useState(0);
@@ -76,7 +78,7 @@ const DeliveryPage = () => {
 						onChange={handleChangeDeliver}
 					>
 						{providers.map((provider) => (
-							<MenuItem value={provider.id}>
+							<MenuItem value={provider.id} key={provider.id}>
 								{provider.name}
 							</MenuItem>
 						))}
@@ -84,15 +86,14 @@ const DeliveryPage = () => {
 				</FormControl>
 				<Button>Добавить нового поставщика</Button>
 			</Box>
-			<Button>Добавить товар в накладную</Button>
 			<Button>Удалить товар из накладной</Button>
 			<itemContext.Provider value={[selectedItems, setSelectedItems]}>
-				{selectedItems.map((item) => (
-					<DeliveryItemBlock items={items} />
-				))}
+				<FullFeaturedCrudGrid items={items} />
 			</itemContext.Provider>
 			<Box>
-				<Button>Сформировать накладную</Button>
+				<Button onClick={handleCreateDelivery}>
+					Сформировать накладную
+				</Button>
 			</Box>
 		</div>
 	);
