@@ -8,6 +8,7 @@ type ItemJson struct {
 	Name           string  `json:"name"`
 	Descriptions   string  `json:"desc"`
 	Dimension      string  `json:"dim"`
+	Count          int64   `json:"count"`
 }
 
 type CategoryJson struct {

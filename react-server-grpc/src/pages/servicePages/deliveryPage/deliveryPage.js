@@ -50,6 +50,13 @@ const DeliveryPage = () => {
 		});
 	}, []);
 
+	const handleCreateDelivery = async () => {
+		await axios.post("http://localhost:8000/delivery", {
+			provider: deliveries.provider,
+			items: selectedItems,
+		});
+	};
+
 	useEffect(() => {
 		GetAllProviders();
 		GetAllItems();
@@ -84,22 +91,6 @@ const DeliveryPage = () => {
 					<DeliveryItemBlock items={items} />
 				))}
 			</itemContext.Provider>
-			<Box>
-				<FormControl>
-					<InputLabel>Товары</InputLabel>
-					<Select
-						sx={{ width: "250px" }}
-						label="Товары"
-						id="items"
-						name="items"
-						onChange={handleChangeDeliver}
-					>
-						{items.map((item) => (
-							<MenuItem value={item.id}>{item.name}</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-			</Box>
 			<Box>
 				<Button>Сформировать накладную</Button>
 			</Box>

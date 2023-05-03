@@ -1,4 +1,11 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+	Box,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
+	TextField,
+} from "@mui/material";
 import React, { useContext } from "react";
 import { itemContext } from "../item.Context";
 
@@ -33,6 +40,11 @@ const DeliveryItemBlock = (props) => {
 						))}
 					</Select>
 				</FormControl>
+				<TextField
+					type="number"
+					label="Количество"
+					name="count"
+				></TextField>
 			</Box>
 		</>
 	);
