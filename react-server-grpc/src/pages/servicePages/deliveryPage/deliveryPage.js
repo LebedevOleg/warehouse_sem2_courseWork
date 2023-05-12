@@ -23,13 +23,14 @@ import FullFeaturedCrudGrid from "./blocks/item.block";
 const DeliveryPage = () => {
 	const auth = useContext(AuthContext);
 	const [deliveries, setDeliveries] = React.useState({
-		provider: "",
+		provider: 0,
+		storage: 0,
 	});
 	const [providers, setProviders] = React.useState([]);
+	const [storages, setStorages] = React.useState([]);
 
 	const [items, setItems] = React.useState([]);
 	const [selectedItems, setSelectedItems] = React.useState([]);
-	const [itemsCount, setItemsCount] = React.useState(0);
 
 	const handleChangeDeliver = (e) => {
 		setDeliveries({
@@ -51,10 +52,21 @@ const DeliveryPage = () => {
 			setItems(res.data.allItems);
 		});
 	}, []);
+	const GetAllStorages = useCallback(async () => {
+		await axios
+			.get("http://localhost:8000/allstorages", {
+				headers: { Authorization: `Bearer ${auth.token}` },
+			})
+			.then((res) => {
+				setStorages(res.data.storages);
+			});
+	}, []);
 
+	//todo: Бэк для создания накладной
 	const handleCreateDelivery = async () => {
-		await axios.post("http://localhost:8000/delivery", {
+		await axios.post("http://localhost:8000/adddelivery", {
 			provider: deliveries.provider,
+			storage: deliveries.storage,
 			items: selectedItems,
 		});
 	};
@@ -62,13 +74,14 @@ const DeliveryPage = () => {
 	useEffect(() => {
 		GetAllProviders();
 		GetAllItems();
-	}, [GetAllProviders, GetAllItems]);
+		GetAllStorages();
+	}, [GetAllProviders, GetAllItems, GetAllStorages]);
 
 	return (
 		<div>
 			<Typography variant="h3">Сформировать накладную</Typography>
 			<Box>
-				<FormControl>
+				<FormControl sx={{ mr: 1 }}>
 					<InputLabel>Поставщик</InputLabel>
 					<Select
 						sx={{ width: "250px" }}
@@ -84,9 +97,24 @@ const DeliveryPage = () => {
 						))}
 					</Select>
 				</FormControl>
-				<Button>Добавить нового поставщика</Button>
+				<FormControl>
+					<InputLabel>Склад</InputLabel>
+					<Select
+						sx={{ width: "250px" }}
+						label="Склад"
+						id="storage"
+						name="storage"
+						onChange={handleChangeDeliver}
+					>
+						{storages.map((storage) => (
+							<MenuItem value={storage.id} key={storage.id}>
+								{storage.name}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
 			</Box>
-			<Button>Удалить товар из накладной</Button>
+			<Button>Добавить нового поставщика</Button>
 			<itemContext.Provider value={[selectedItems, setSelectedItems]}>
 				<FullFeaturedCrudGrid items={items} />
 			</itemContext.Provider>

@@ -39,15 +39,11 @@ function SelectEditInputCell(props) {
 			native
 			autoFocus
 		>
-			<option>Back-end Developer</option>
-			<option>Front-end Developer</option>
-			<option>UX Designer</option>
-			{/* {items.map((item) => (
+			{props.colDef.data_items.map((item) => (
 				<option key={item.id} value={item.name}>
-					{" "}
-					{item.name}{" "}
+					{item.name}
 				</option>
-			))} */}
+			))}
 		</Select>
 	);
 }
@@ -69,6 +65,7 @@ SelectEditInputCell.propTypes = {
 };
 
 const renderSelectEditInputCell = (params) => {
+	console.log(params);
 	return <SelectEditInputCell {...params} />;
 };
 
@@ -161,6 +158,7 @@ export default function FullFeaturedCrudGrid(props) {
 			renderEditCell: renderSelectEditInputCell,
 			width: 180,
 			editable: true,
+			data_items: props.items,
 		},
 		{
 			field: "count",
@@ -229,7 +227,6 @@ export default function FullFeaturedCrudGrid(props) {
 		>
 			<DataGrid
 				rows={rows}
-				items={props.items}
 				columns={columns}
 				editMode="row"
 				rowModesModel={rowModesModel}
