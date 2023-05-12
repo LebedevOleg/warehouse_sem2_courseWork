@@ -37,6 +37,8 @@ func main() {
 		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
 	server.AddAdminAuth("/check", "GET", "/allstorages",
 		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
+	server.AddAdminAuth("/check", "POST", "/addtransaction",
+		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
 
 	server.Start()
 

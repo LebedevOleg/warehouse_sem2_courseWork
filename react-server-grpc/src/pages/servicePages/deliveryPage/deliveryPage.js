@@ -64,11 +64,17 @@ const DeliveryPage = () => {
 
 	//todo: Бэк для создания накладной
 	const handleCreateDelivery = async () => {
-		await axios.post("http://localhost:8000/adddelivery", {
-			provider: deliveries.provider,
-			storage: deliveries.storage,
-			items: selectedItems,
-		});
+		await axios.post(
+			"http://localhost:8000/addtransaction",
+			{
+				provider: deliveries.provider,
+				storage: deliveries.storage,
+				items: selectedItems,
+			},
+			{
+				headers: { Authorization: `Bearer ${auth.token}` },
+			}
+		);
 	};
 
 	useEffect(() => {

@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"practice2sem/transactionsServer/models"
+	"time"
 )
 
 func (db *DeliveryDB) GetAllProviders() (*sql.Rows, error) {
@@ -24,8 +25,8 @@ func (db *DeliveryDB) GetAllStorages() (*sql.Rows, error) {
 func (db *DeliveryDB) CreateNewDelivery(deliveryRequest models.DeliveryRequest) (*models.DeliveryTemp, error) {
 	var deliveryTemp = new(models.DeliveryTemp)
 	err := db.Db.QueryRow(
-		`INSERT INTO deliveries (provider_id, storage_id) VALUES($1, $2) RETURNING id`,
-		deliveryRequest.ProviderId, deliveryRequest.StorageId).Scan(
+		`INSERT INTO deliveries (storage_id, delivery_date) VALUES($1, $2) RETURNING id`,
+		deliveryRequest.StorageId, time.Now().).Scan(
 		deliveryTemp.Id,
 	)
 	if err != nil {

@@ -10,6 +10,6 @@ func main() {
 
 	server.AddRoute("/check/allproviders", "GET", "", transport.GetProviders)
 	server.AddRoute("/check/allstorages", "GET", "", transport.GetStorages)
-	//server.AddRoute()
+	server.AddRoute("/check/addtransaction", "POST", "", transport.CreateDelivery)
 	server.Start()
 }
