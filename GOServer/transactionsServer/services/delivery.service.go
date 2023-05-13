@@ -7,7 +7,7 @@ import (
 	"practice2sem/transactionsServer/models"
 	"time"
 
-	docxt "github.com/legion-zver/go-docx-templates"
+	"github.com/briiC/docxplate"
 )
 
 func GetAllProviders() ([]models.Provider, error) {
@@ -67,7 +67,28 @@ func CreateNewDelivery(deliveryRequest models.DeliveryRequest) (string, error) {
 	if err != nil {
 		return "", errors.New("failed to create new delivery: " + err.Error())
 	}
-	template, err := docxt.OpenTemplate(filepath.Join(".", "templates", "Delivery_temp.docx"))
+
+	tdoc, err := docxplate.OpenTemplate(filepath.Join(".", "templates", "test.docx"))
+	if err != nil {
+		return "", errors.New("failed to open template: " + err.Error())
+	}
+	tdoc.Params(deliveryData)
+
+	/* replaceMap := docx.PlaceholderMap{
+		"ProviderName":   deliveryData.ProviderName,
+		"Date":           deliveryData.Date,
+		"Items":          deliveryData.Items,
+		"StorageAddress": deliveryData.StorageAddress,
+	}
+	doc, err := docx.Open(filepath.Join(".", "templates", "test.docx"))
+	if err != nil {
+		return "", errors.New("failed to open template: " + err.Error())
+	}
+	err = doc.ReplaceAll(replaceMap)
+	if err != nil {
+		return "", errors.New("failed to replace placeholders: " + err.Error())
+	} */
+	/* template, err := docxt.OpenTemplate(filepath.Join(".", "templates", "test.docx"))
 	if err != nil {
 		return "", errors.New("failed to open template: " + err.Error())
 	}
@@ -75,11 +96,15 @@ func CreateNewDelivery(deliveryRequest models.DeliveryRequest) (string, error) {
 	err = template.RenderTemplate(&deliveryData)
 	if err != nil {
 		return "", errors.New("failed to render template: " + err.Error())
-	}
+	} */
 	fileName := "delivery_" + time.Now().Format("2006-01-02_15-04-05") + ".docx"
-	err = template.Save(filepath.Join(".", "files", fileName))
+	tdoc.ExportDocx(filepath.Join(".", "files", fileName))
+
+	//err = doc.WriteToFile(filepath.Join(".", "files", fileName))
+
+	//err = template.Save(filepath.Join(".", "files", fileName))
 	if err != nil {
 		return "", errors.New("failed to save file: " + err.Error())
 	}
-	return fileName, nil
+	return filepath.Join(".", "files", fileName), nil
 }
