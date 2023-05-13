@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"path/filepath"
 	"practice2sem/transactionsServer/database"
 	"practice2sem/transactionsServer/models"
 	"time"
@@ -66,17 +67,17 @@ func CreateNewDelivery(deliveryRequest models.DeliveryRequest) (string, error) {
 	if err != nil {
 		return "", errors.New("failed to create new delivery: " + err.Error())
 	}
-	template, err := docxt.OpenTemplate("../templates/Delivery_temp.docx")
+	template, err := docxt.OpenTemplate(filepath.Join(".", "templates", "Delivery_temp.docx"))
 	if err != nil {
 		return "", errors.New("failed to open template: " + err.Error())
 	}
 
-	err = template.RenderTemplate(deliveryData)
+	err = template.RenderTemplate(&deliveryData)
 	if err != nil {
 		return "", errors.New("failed to render template: " + err.Error())
 	}
-	fileName := "delivery_" + time.Now().Format(time.RFC3339) + ".docx"
-	err = template.Save("../files/" + fileName)
+	fileName := "delivery_" + time.Now().Format("2006-01-02_15-04-05") + ".docx"
+	err = template.Save(filepath.Join(".", "files", fileName))
 	if err != nil {
 		return "", errors.New("failed to save file: " + err.Error())
 	}

@@ -34,9 +34,9 @@ func CreateDelivery(ctx echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	fileName, err := services.CreateNewDelivery(*deliveryData)
+	file, err := services.CreateNewDelivery(*deliveryData)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	return ctx.File("../files/" + fileName)
+	return ctx.File(file)
 }

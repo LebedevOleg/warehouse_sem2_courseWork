@@ -2,7 +2,9 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	"practice2sem/transactionsServer/models"
+	"strconv"
 	"time"
 )
 
@@ -25,9 +27,10 @@ func (db *DeliveryDB) GetAllStorages() (*sql.Rows, error) {
 func (db *DeliveryDB) CreateNewDelivery(deliveryRequest models.DeliveryRequest) (*models.DeliveryTemp, error) {
 	var deliveryTemp = new(models.DeliveryTemp)
 	err := db.Db.QueryRow(
-		`INSERT INTO deliveries (storage_id, delivery_date) VALUES($1, $2) RETURNING id`,
-		deliveryRequest.StorageId, time.Now().).Scan(
-		deliveryTemp.Id,
+		`INSERT INTO deliveries (storage_id, delivery_date) VALUES($1, $2) RETURNING id, delivery_date`,
+		deliveryRequest.StorageId, time.Now()).Scan(
+		&deliveryTemp.Id,
+		&deliveryTemp.Date,
 	)
 	if err != nil {
 		return nil, err
@@ -39,11 +42,20 @@ func (db *DeliveryDB) CreateNewDelivery(deliveryRequest models.DeliveryRequest) 
 			return nil, err
 		}
 	}
-	deliveryTemp.Items = deliveryRequest.Items
+	items := make([]models.ItemTemp, 0, len(deliveryRequest.Items))
+	for _, item := range deliveryRequest.Items {
+		items = append(items, models.ItemTemp{
+			Id:    strconv.Itoa(item.Id),
+			Name:  item.Name,
+			Count: strconv.Itoa(item.Count),
+			Price: fmt.Sprintf("%.2f", item.Price),
+		})
+	}
+	deliveryTemp.Items = items
 	err = db.Db.QueryRow(
 		`SELECT name FROM providers WHERE id = $1`,
 		deliveryRequest.ProviderId).Scan(
-		&deliveryTemp.Provider_name,
+		&deliveryTemp.ProviderName,
 	)
 	if err != nil {
 		return nil, err
@@ -51,7 +63,7 @@ func (db *DeliveryDB) CreateNewDelivery(deliveryRequest models.DeliveryRequest) 
 	err = db.Db.QueryRow(
 		`SELECT address FROM storages WHERE id = $1`,
 		deliveryRequest.StorageId).Scan(
-		&deliveryTemp.Storage_address,
+		&deliveryTemp.StorageAddress,
 	)
 	if err != nil {
 		return nil, err
