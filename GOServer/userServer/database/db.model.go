@@ -67,3 +67,8 @@ func (p *UserDB) GetAllUsers() (*sql.Rows, error) {
 	return rows, nil
 
 }
+
+func (p *UserDB) GetUserById(id int) *sql.Row {
+	row := p.Db.QueryRow(`SELECT * FROM users WHERE id = $1`, id)
+	return row
+}

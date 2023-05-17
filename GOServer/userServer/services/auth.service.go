@@ -96,3 +96,29 @@ func GetAllUsers() ([]*models.UserJson, error) {
 	}
 	return users, nil
 }
+
+func GetUserInfo(id int) (*models.UserJson, error) {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return nil, errors.New("get postgresql error\n" + err.Error())
+	}
+	row := db.GetUserById(id)
+	var user *models.UserJson
+	err = row.Scan(&user.Id, &user.Email, &user.Type, &user.Role, &user.Name)
+	if err != nil {
+		return nil, errors.New("get user error\n" + err.Error())
+	}
+	return user, nil
+}
+
+func UpdateUserInfo(user *models.UserJson) error {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return errors.New("get postgresql error\n" + err.Error())
+	}
+	err = db.UpdateUser(*user)
+	if err != nil {
+		return errors.New("update user error\n" + err.Error())
+	}
+	return nil
+}

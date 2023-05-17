@@ -50,6 +50,31 @@ func Login(ctx echo.Context) error {
 	})
 }
 
+func GetUserInfo(ctx echo.Context) error {
+	user := ctx.Get("user").(*jwt.Token)
+	claims := user.Claims.(*models.UserJwt)
+	id := claims.Id
+	userInfo, err := services.GetUserInfo(id)
+	if err != nil {
+		return ctx.String(http.StatusBadRequest, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, userInfo)
+}
+
+func UpdateUserInfo(ctx echo.Context) error {
+	upUser := new(models.UserJson)
+	err := ctx.Bind(upUser)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	err = services.UpdateUserInfo(upUser)
+	if err != nil {
+		return ctx.String(http.StatusBadRequest, err.Error())
+	}
+	return ctx.NoContent(http.StatusOK)
+
+}
+
 // test auth
 func CheckAuth(ctx echo.Context) error {
 	user := ctx.Get("user").(*jwt.Token)
@@ -69,6 +94,19 @@ func CheckStatus(status string) echo.MiddlewareFunc {
 				return next(ctx)
 			}
 			return ctx.String(http.StatusBadRequest, "Недостаточный статус. Ваш: \n"+claims.UType+"\nНужен: "+status)
+		}
+	}
+}
+
+func CheckLogin() echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(ctx echo.Context) error {
+			user := ctx.Get("user").(*jwt.Token)
+			claims := user.Claims.(*models.UserJwt)
+			if claims.Email != "" {
+				return next(ctx)
+			}
+			return ctx.String(http.StatusBadRequest, "Необходимо зайти в профиль")
 		}
 	}
 }
