@@ -14,5 +14,6 @@ func main() {
 	server.AddRoute("/api/getallitems", "GET", "", transport.GetAllItems)
 	server.AddRoute("/api/getallcategories", "GET", "", transport.GetItemCategories)
 	server.AddRoute("/check/getallstocks", "GET", "", transport.GetAllStocks)
+	server.AddRoute("/check/createstock", "POST", "", transport.CreateStock)
 	server.Start()
 }

@@ -21,3 +21,12 @@ type StockJson struct {
 	Name    string `json:"name"`
 	Address string `json:"address"`
 }
+
+type PurchaseJson struct {
+	Id        int64      `json:"id"`
+	User_id   int64      `json:"user_id"`
+	Items     []ItemJson `json:"items"`
+	DateStart string     `json:"date_start"`
+	DateEnd   string     `json:"date_end"`
+	Price     float32    `json:"price"`
+}

@@ -72,3 +72,29 @@ func GetAllStocks(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, echo.Map{"stocks": stocks})
 }
+
+func CreateStock(ctx echo.Context) error {
+	stock := new(models.StockJson)
+	err := ctx.Bind(stock)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	err = services.CreateStock(stock)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return ctx.JSON(http.StatusCreated, "Created successfully")
+}
+
+func CreatePurchase(ctx echo.Context) error {
+	purchase := new(models.PurchaseJson)
+	err := ctx.Bind(purchase)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	err = services.CreatePurchase(purchase)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return ctx.JSON(http.StatusCreated, "Created successfully")
+}

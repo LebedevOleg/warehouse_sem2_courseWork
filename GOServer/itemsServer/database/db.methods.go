@@ -58,3 +58,31 @@ func (db *ItemDB) AllStocks() (*sql.Rows, error) {
 	}
 	return rows, nil
 }
+
+// !todo: Переделать
+func (db *ItemDB) CreateStock(s models.StockJson) error {
+	_, err := db.Db.Exec(`INSERT INTO storages (name, address) VALUES ($1, $2)`,
+		s.Name, s.Address)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// !todo: Переделать
+func (db *ItemDB) CreatePurchase(p models.PurchaseJson) error {
+	err := db.Db.QueryRow(`INSERT INTO orders (date_start, status, user_id) VALUES ($1, $2, $3)`,
+		p.DateStart, 0, p.User_id).Scan(p.Id)
+	if err != nil {
+		return err
+	}
+	for _, i := range p.Items {
+		_, err = db.Db.Exec(`INSERT INTO items_to_orders (order_id, item_id, item_count) VALUES ($1, $2)`,
+			p.Id, i.Id, i.Count)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+
+}

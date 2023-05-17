@@ -26,15 +26,13 @@ func Registr(ctx echo.Context) error {
 	})
 }
 
-/* err = user.HashPassword()
-if err != nil {
-	return ctx.String(http.StatusBadRequest, "Ошибка при хэшировании пароля")
+func GetAllUsers(ctx echo.Context) error {
+	users, err := services.GetAllUsers()
+	if err != nil {
+		return ctx.String(http.StatusBadRequest, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, users)
 }
-db, err := database.GetPostgresql()
-if err != nil {
-	return ctx.String(http.StatusBadRequest, "Ошибка доступа к базе данных")
-}
-err = db.CreateUser(*user) */
 
 func Login(ctx echo.Context) error {
 	user := new(models.UserJson)
@@ -51,35 +49,6 @@ func Login(ctx echo.Context) error {
 		"role":  role,
 	})
 }
-
-/* db, err := database.GetPostgresql()
-if err != nil {
-	return ctx.String(http.StatusBadRequest, "Ошибка доступа к базе данных")
-}
-row := db.GetUser(*user)
-var password string
-var email string
-var uType string
-err = row.Scan(&email, &password, &uType)
-if err != nil {
-	return ctx.String(http.StatusBadRequest, "ошибка получения пароля "+err.Error())
-}
-if !user.CheckPasswordHash(password) {
-	return ctx.String(http.StatusBadRequest, "Неверный пароль "+password)
-}
-//! Сделать создание ключа доступа
-//* jwt token
-log.Println(email, "\n", uType)
-claims := &models.UserJwt{
-	email,
-	uType,
-	jwt.RegisteredClaims{ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 4))},
-}
-userToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-t, err := userToken.SignedString([]byte("secret"))
-if err != nil {
-	return ctx.String(http.StatusBadRequest, "Ошибка создания токена \n"+err.Error())
-} */
 
 // test auth
 func CheckAuth(ctx echo.Context) error {

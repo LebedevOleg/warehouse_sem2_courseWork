@@ -40,3 +40,16 @@ func CreateDelivery(ctx echo.Context) error {
 	}
 	return ctx.File(file)
 }
+
+func CreateProvider(ctx echo.Context) error {
+	providerData := new(models.Provider)
+	err := ctx.Bind(providerData)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	err = services.CreateNewProvider(*providerData)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return ctx.NoContent(http.StatusOK)
+}

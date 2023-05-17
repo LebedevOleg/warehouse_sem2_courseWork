@@ -75,3 +75,24 @@ func Login(user *models.UserJson) (string, string, error) {
 	}
 	return t, uType, nil
 }
+
+func GetAllUsers() ([]*models.UserJson, error) {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return nil, errors.New("get postgresql error\n" + err.Error())
+	}
+	rows, err := db.GetAllUsers()
+	if err != nil {
+		return nil, errors.New("get all users error\n" + err.Error())
+	}
+	var users []*models.UserJson
+	for rows.Next() {
+		user := new(models.UserJson)
+		err := rows.Scan(&user.Id, &user.Email, &user.Type, &user.Role, &user.Name)
+		if err != nil {
+			return nil, errors.New("get all users error\n" + err.Error())
+		}
+		users = append(users, user)
+	}
+	return users, nil
+}

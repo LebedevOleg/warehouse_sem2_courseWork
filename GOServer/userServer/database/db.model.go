@@ -58,3 +58,12 @@ func (p *UserDB) GetUser(u models.UserJson) *sql.Row {
 	row := p.Db.QueryRow(`SELECT users.id, email, password, r.name FROM users, user_roles r where role_id = r.id and email = $1`, u.Email)
 	return row
 }
+
+func (p *UserDB) GetAllUsers() (*sql.Rows, error) {
+	rows, err := p.Db.Query(`SELECT * FROM users`)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
+
+}

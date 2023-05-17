@@ -1,11 +1,18 @@
 package models
 
 type DeliveryTemp struct {
-	Id             string
+	Id    string
+	Prov  string
+	Adrs  string
+	Date  string
+	Text  TextTemp
+	Items []ItemTemp
+}
+
+type TextTemp struct {
 	ProviderName   string
-	StorageAddress string
 	Date           string
-	Items          []ItemTemp
+	StorageAddress string
 }
 
 type ItemTemp struct {

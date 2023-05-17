@@ -55,7 +55,7 @@ func (db *DeliveryDB) CreateNewDelivery(deliveryRequest models.DeliveryRequest) 
 	err = db.Db.QueryRow(
 		`SELECT name FROM providers WHERE id = $1`,
 		deliveryRequest.ProviderId).Scan(
-		&deliveryTemp.ProviderName,
+		&deliveryTemp.Prov,
 	)
 	if err != nil {
 		return nil, err
@@ -63,10 +63,25 @@ func (db *DeliveryDB) CreateNewDelivery(deliveryRequest models.DeliveryRequest) 
 	err = db.Db.QueryRow(
 		`SELECT address FROM storages WHERE id = $1`,
 		deliveryRequest.StorageId).Scan(
-		&deliveryTemp.StorageAddress,
+		&deliveryTemp.Adrs,
 	)
 	if err != nil {
 		return nil, err
 	}
+	deliveryTemp.Text = models.TextTemp{
+		ProviderName:   deliveryTemp.Prov,
+		Date:           deliveryTemp.Date,
+		StorageAddress: deliveryTemp.Adrs,
+	}
 	return deliveryTemp, nil
+}
+
+func (db *DeliveryDB) CreateNewProvider(provider models.Provider) error {
+	_, err := db.Db.Exec(
+		`INSERT INTO providers (name, address, phone) VALUES($1, $2, $3)`,
+		provider.Name, provider.Address, provider.Phone)
+	if err != nil {
+		return err
+	}
+	return nil
 }

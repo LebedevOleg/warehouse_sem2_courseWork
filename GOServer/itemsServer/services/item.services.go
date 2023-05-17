@@ -119,3 +119,27 @@ func GetAllStocks() ([]models.StockJson, error) {
 	}
 	return stocks, nil
 }
+
+func CreateStock(stock *models.StockJson) error {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	err = db.CreateStock(*stock)
+	if err != nil {
+		return errors.New("failed to create stock: " + err.Error())
+	}
+	return nil
+}
+
+func CreatePurchase(purchase *models.PurchaseJson) error {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	err = db.CreatePurchase(*purchase)
+	if err != nil {
+		return errors.New("failed to create purchase: " + err.Error())
+	}
+	return nil
+}
