@@ -5,6 +5,7 @@ import (
 	"errors"
 	"practice2sem/server/database"
 	"practice2sem/userServer/models"
+	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -60,7 +61,9 @@ func (p *UserDB) GetUser(u models.UserJson) *sql.Row {
 }
 
 func (p *UserDB) GetAllUsers() (*sql.Rows, error) {
-	rows, err := p.Db.Query(`SELECT * FROM users`)
+	rows, err := p.Db.Query(`SELECT users.id, users.name, email, r.name, t.name 
+	FROM users, user_roles r, user_types t
+	WHERE role_id = r.id and type_id = t.id`)
 	if err != nil {
 		return nil, err
 	}
@@ -71,4 +74,30 @@ func (p *UserDB) GetAllUsers() (*sql.Rows, error) {
 func (p *UserDB) GetUserById(id int) *sql.Row {
 	row := p.Db.QueryRow(`SELECT * FROM users WHERE id = $1`, id)
 	return row
+}
+
+func (p *UserDB) CreateOffer(u models.UserJwt, items []models.Item) error {
+	var allPrice float32
+	allPrice = 0
+	for _, item := range items {
+		allPrice += item.Price * float32(item.Count)
+	}
+	id := 0
+	err := p.Db.QueryRow(`INSERT INTO orders
+(date_start,  status, user_id, price)
+VALUES('$1, $3, $4, $5) RETURNING id`,
+		time.Now(), 0, u.Id, allPrice).Scan(&id)
+	if err != nil {
+		return errors.New("Error creating offer " + err.Error())
+	}
+	for _, item := range items {
+		_, err := p.Db.Exec(`INSERT INTO items_to_orders
+(order_id, item_id, item_count)
+VALUES($1, $2, $3)`,
+			id, item.Id, item.Count)
+		if err != nil {
+			return errors.New("Error creating offer " + err.Error())
+		}
+	}
+	return nil
 }

@@ -104,7 +104,7 @@ func GetUserInfo(id int) (*models.UserJson, error) {
 	}
 	row := db.GetUserById(id)
 	var user *models.UserJson
-	err = row.Scan(&user.Id, &user.Email, &user.Type, &user.Role, &user.Name)
+	err = row.Scan(&user.Id, &user.Name, &user.Email, &user.Role, &user.Type)
 	if err != nil {
 		return nil, errors.New("get user error\n" + err.Error())
 	}
@@ -119,6 +119,18 @@ func UpdateUserInfo(user *models.UserJson) error {
 	err = db.UpdateUser(*user)
 	if err != nil {
 		return errors.New("update user error\n" + err.Error())
+	}
+	return nil
+}
+
+func CreateOffer(user *models.UserJwt, items []models.Item) error {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return errors.New("get postgresql error\n" + err.Error())
+	}
+	err = db.CreateOffer(*user, items)
+	if err != nil {
+		return errors.New("create offer error\n" + err.Error())
 	}
 	return nil
 }

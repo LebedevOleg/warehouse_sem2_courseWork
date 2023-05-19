@@ -7,18 +7,14 @@ import {
 	Select,
 	Typography,
 } from "@mui/material";
-import React, {
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-} from "react";
-import { useAuth } from "../../../hooks/auth.hook";
+import React, { useCallback, useContext, useEffect } from "react";
 import { itemContext } from "./item.Context";
-import DeliveryItemBlock from "./blocks/item.block";
 import axios from "axios";
 import { AuthContext } from "../../../context/auth.context";
 import FullFeaturedCrudGrid from "./blocks/item.block";
+import Docxtemplater from "docxtemplater";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 const DeliveryPage = () => {
 	const auth = useContext(AuthContext);
@@ -62,19 +58,39 @@ const DeliveryPage = () => {
 			});
 	}, []);
 
-	//todo: Бэк для создания накладной
 	const handleCreateDelivery = async () => {
-		await axios.post(
-			"http://localhost:8000/addtransaction",
-			{
-				provider: deliveries.provider,
-				storage: deliveries.storage,
-				items: selectedItems,
-			},
-			{
-				headers: { Authorization: `Bearer ${auth.token}` },
-			}
-		);
+		await axios
+			.post(
+				"http://localhost:8000/addtransaction",
+				{
+					provider: deliveries.provider,
+					storage: deliveries.storage,
+					items: selectedItems,
+				},
+				{
+					headers: { Authorization: `Bearer ${auth.token}` },
+				}
+			)
+			.then((res) => {
+				fetch("http://localhost:8000/getfile", {
+					headers: { Authorization: `Bearer ${auth.token}` },
+				})
+					.then((responce) => responce.arrayBuffer())
+					.then((buffer) => {
+						console.log(res.data.data);
+
+						let doc = new Docxtemplater();
+						doc.loadZip(new JSZip(buffer));
+						doc.setData(res.data.data);
+						doc.render();
+						let out = doc.getZip().generate({
+							type: "blob",
+							mimeType:
+								"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+						});
+						saveAs(out, "Накладная.docx");
+					});
+			});
 	};
 
 	useEffect(() => {

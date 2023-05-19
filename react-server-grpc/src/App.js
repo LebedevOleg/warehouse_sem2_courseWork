@@ -9,6 +9,7 @@ import ServicePage from "./pages/servicePages/servicePage";
 import ItemServicePage from "./pages/servicePages/itemsServicePage/itemServicePage";
 import Loader from "./components/Loading/Loading";
 import DeliveryPage from "./pages/servicePages/deliveryPage/deliveryPage";
+import UserServicePage from "./pages/servicePages/usersServicePage/userServicePage";
 
 function App() {
 	const { token, userRole, login, isAdmin, logout, ready } = useAuth();
@@ -56,9 +57,15 @@ function App() {
 						/>
 						<Route
 							exact
+							path="/service/users"
+							element={<UserServicePage />}
+						/>
+						<Route
+							exact
 							path="/service"
 							element={<ServicePage />}
 						/>
+						<Route exact path="/backet" />
 					</Routes>
 				</BrowserRouter>
 			</div>

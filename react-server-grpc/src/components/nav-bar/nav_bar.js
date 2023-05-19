@@ -12,6 +12,7 @@ import {
 import { useAuth } from "../../hooks/auth.hook";
 import SignModal from "../authModal/auth.modal";
 import { AuthContext } from "../../context/auth.context";
+import BacketModal from "../backet/backet";
 
 const NavBar = () => {
 	const { token, isAdmin } = useAuth();
@@ -67,6 +68,7 @@ const NavBar = () => {
 								<MenuItem id="service">Сервисное меню</MenuItem>
 							</Menu>
 						</Typography>
+						<BacketModal />
 						{(!!token && (
 							<Typography>
 								<Button

@@ -72,7 +72,21 @@ func UpdateUserInfo(ctx echo.Context) error {
 		return ctx.String(http.StatusBadRequest, err.Error())
 	}
 	return ctx.NoContent(http.StatusOK)
+}
 
+func CreateOffer(ctx echo.Context) error {
+	jwt := ctx.Get("user").(*jwt.Token)
+	user := jwt.Claims.(*models.UserJwt)
+	offerItems := make([]models.Item, 0, 256)
+	err := ctx.Bind(&offerItems)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	err = services.CreateOffer(user, offerItems)
+	if err != nil {
+		return ctx.String(http.StatusBadRequest, err.Error())
+	}
+	return ctx.NoContent(http.StatusOK)
 }
 
 // test auth

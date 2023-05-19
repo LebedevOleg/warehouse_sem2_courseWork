@@ -1,12 +1,12 @@
 package models
 
 type DeliveryTemp struct {
-	Id    string
-	Prov  string
-	Adrs  string
-	Date  string
+	Id    string `json:"id"`
+	Prov  string `json:"prov"`
+	Adrs  string `json:"adrs"`
+	Date  string `json:"date"`
 	Text  TextTemp
-	Items []ItemTemp
+	Items []ItemTemp `json:"items"`
 }
 
 type TextTemp struct {
@@ -16,8 +16,8 @@ type TextTemp struct {
 }
 
 type ItemTemp struct {
-	Id    string
-	Name  string
-	Count string
-	Price string
+	Id    string `json:"id"`
+	Name  string `json:"name"`
+	Count string `json:"count"`
+	Price string `json:"price"`
 }

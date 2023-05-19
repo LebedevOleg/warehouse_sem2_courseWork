@@ -43,7 +43,7 @@ const ServicePage = () => {
 				<Button
 					sx={{ display: "block" }}
 					onClick={() => {
-						window.location = "/shop";
+						window.location = "/service/users";
 					}}
 				>
 					<Typography variant="h5">

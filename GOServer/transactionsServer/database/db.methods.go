@@ -44,11 +44,19 @@ func (db *DeliveryDB) CreateNewDelivery(deliveryRequest models.DeliveryRequest) 
 	}
 	items := make([]models.ItemTemp, 0, len(deliveryRequest.Items))
 	for _, item := range deliveryRequest.Items {
+		err = db.Db.QueryRow(
+			`SELECT price_for_unit FROM items WHERE name = $1`,
+			item.Name).Scan(
+			&item.Price,
+		)
+		if err != nil {
+			return nil, err
+		}
 		items = append(items, models.ItemTemp{
 			Id:    strconv.Itoa(item.Id),
 			Name:  item.Name,
 			Count: strconv.Itoa(item.Count),
-			Price: fmt.Sprintf("%.2f", item.Price),
+			Price: fmt.Sprintf("%.2f", item.Price*float32(item.Count)),
 		})
 	}
 	deliveryTemp.Items = items

@@ -2,6 +2,7 @@ package transport
 
 import (
 	"net/http"
+	"path/filepath"
 	"practice2sem/transactionsServer/models"
 	"practice2sem/transactionsServer/services"
 
@@ -34,11 +35,15 @@ func CreateDelivery(ctx echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	file, err := services.CreateNewDelivery(*deliveryData)
+	data, err := services.CreateNewDelivery(*deliveryData)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	return ctx.File(file)
+	return ctx.JSON(http.StatusOK, echo.Map{"data": data})
+}
+
+func GetFileTemp(ctx echo.Context) error {
+	return ctx.File(filepath.Join(".", "templates", "Delivery_temp.docx"))
 }
 
 func CreateProvider(ctx echo.Context) error {

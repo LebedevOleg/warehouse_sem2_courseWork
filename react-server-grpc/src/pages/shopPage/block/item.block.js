@@ -1,5 +1,6 @@
 import {
 	Box,
+	Button,
 	Grid,
 	Stack,
 	TableCell,
@@ -7,9 +8,15 @@ import {
 	Typography,
 } from "@mui/material";
 
-import React from "react";
+import React, { useContext } from "react";
 
 const ItemBlock = (props) => {
+	const handleClick = () => {
+		const backet = JSON.parse(localStorage.getItem("backet"));
+		backet.push(props.product);
+		localStorage.setItem("backet", JSON.stringify(backet));
+	};
+
 	return (
 		<TableRow key={props.product.id}>
 			<TableCell align="center">
@@ -25,6 +32,9 @@ const ItemBlock = (props) => {
 			</TableCell>
 			<TableCell align="center">
 				Цена за единицу: {props.product.pfu}
+			</TableCell>
+			<TableCell align="center">
+				<Button onClick={handleClick}>Добавить в корзину</Button>
 			</TableCell>
 		</TableRow>
 	);

@@ -17,7 +17,7 @@ func main() {
 	server.AddRoute("/api", "POST", "/login", transport.Login)
 	server.AddAdminAuth("/api", "GET", "/getallusers", transport.GetAllUsers, config, transport.CheckStatus("Администратор"))
 	server.AddAdminAuth("/api", "GET", "/getuserinfo", transport.GetUserInfo, config, transport.CheckLogin())
-	server.AddAdminAuth("/api", "POST", "/updateuser", transport.UpdateUserInfo, config, transport.CheckLogin())
+	server.AddAdminAuth("/api", "GET", "/updateuser", transport.UpdateUserInfo, config, transport.CheckLogin())
 
 	//--------------------------------routes items-auth routes------------------------------------------
 	itemProxy := httputil.NewSingleHostReverseProxy(&url.URL{
@@ -45,6 +45,8 @@ func main() {
 	server.AddAdminAuth("/check", "POST", "/addtransaction",
 		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
 	server.AddAdminAuth("/check", "POST", "/createprovider",
+		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
+	server.AddAdminAuth("/check", "GET", "/getfile",
 		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
 
 	server.Start()
