@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"practice2sem/server/database"
 	"practice2sem/userServer/models"
 	"time"
@@ -86,9 +87,11 @@ func (p *UserDB) CreateOffer(u models.UserJwt, offer models.Offer) error {
 	err := p.Db.QueryRow(`INSERT INTO orders (date_start,  status, user_id, price, storage_id)
 		VALUES($1, $2, $3, $4, $5) RETURNING id`,
 		time.Now(), 0, u.Id, allPrice, offer.StorageId).Scan(&id)
+
 	if err != nil {
 		return errors.New("Error creating offer " + err.Error())
 	}
+	fmt.Println(id)
 	for _, item := range offer.Items {
 		_, err := p.Db.Exec(`INSERT INTO items_to_orders (order_id, item_id, item_count) VALUES($1, $2, $3)`,
 			id, item.Id, item.Count)
