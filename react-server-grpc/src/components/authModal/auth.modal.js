@@ -52,7 +52,19 @@ const SignModal = () => {
 			});
 	};
 
-	const handleRegister = async () => {};
+	const handleRegister = async () => {
+		await axios
+			.post("http://localhost:8000/registr", { ...registerForm })
+			.then((res) => {
+				auth.login(res.data.token, res.data.role);
+				window.location.reload();
+			})
+			.catch((err) => {
+				if (err.request) {
+					console.log(err.request);
+				}
+			});
+	};
 
 	const handleOpenModal = () => {
 		setOpenModal(true);

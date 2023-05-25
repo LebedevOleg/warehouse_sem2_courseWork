@@ -6,3 +6,7 @@ type Item struct {
 	Count int     `json:"count"`
 	Price float32 `json:"price"`
 }
+type Offer struct {
+	StorageId int    `json:"storage_id"`
+	Items     []Item `json:"items"`
+}

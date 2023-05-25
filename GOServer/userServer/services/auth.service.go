@@ -123,12 +123,12 @@ func UpdateUserInfo(user *models.UserJson) error {
 	return nil
 }
 
-func CreateOffer(user *models.UserJwt, items []models.Item) error {
+func CreateOffer(user *models.UserJwt, offer *models.Offer) error {
 	db, err := database.GetPostgresql()
 	if err != nil {
 		return errors.New("get postgresql error\n" + err.Error())
 	}
-	err = db.CreateOffer(*user, items)
+	err = db.CreateOffer(*user, *offer)
 	if err != nil {
 		return errors.New("create offer error\n" + err.Error())
 	}

@@ -1,18 +1,21 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
 
-const BacketItem = ({ item }) => {
+const BacketItem = ({ item, update }) => {
+	const [data, setData] = React.useState(item);
 	const deleteItem = (id) => {
 		let backet = JSON.parse(localStorage.getItem("backet"));
-		backet = backet.filter((item) => item.id !== id);
+		backet = backet.filter((i) => i.id !== id);
 		localStorage.setItem("backet", JSON.stringify(backet));
+		update();
 	};
 
 	const addItem = (id) => {
 		let backet = JSON.parse(localStorage.getItem("backet"));
-		backet.map((item) => {
-			if (item.id === id) {
-				item.count++;
+		backet.map((i) => {
+			if (i.id === id) {
+				i.count++;
+				setData(i);
 			}
 		});
 		localStorage.setItem("backet", JSON.stringify(backet));
@@ -20,11 +23,13 @@ const BacketItem = ({ item }) => {
 
 	const minusItem = (id) => {
 		let backet = JSON.parse(localStorage.getItem("backet"));
-		backet.map((item) => {
-			if (item.id === id) {
-				item.count--;
-				if (item.count <= 0) {
-					deleteItem(item.id);
+		backet.map((i) => {
+			if (i.id === id) {
+				i.count--;
+				if (i.count <= 0) {
+					deleteItem(i.id);
+				} else {
+					setData(i);
 				}
 			}
 		});
@@ -33,12 +38,12 @@ const BacketItem = ({ item }) => {
 
 	return (
 		<div key={item.id}>
-			<Typography>{item.name}</Typography>
+			<Typography>{data.name}</Typography>
 			<Button onClick={() => minusItem(item.id)}>-</Button>
-			<Typography>{item.count}</Typography>
+			<Typography>{data.count}</Typography>
 			<Button onClick={() => addItem(item.id)}>+</Button>
-			<Typography>{item.dim}</Typography>
-			<Typography>{item.price * item.count}</Typography>
+			<Typography>{data.dim}</Typography>
+			<Typography>{data.price * data.count}</Typography>
 			<Button onClick={() => deleteItem(item.id)}>Удалить</Button>
 		</div>
 	);

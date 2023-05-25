@@ -6,7 +6,7 @@ import {
 	DialogTitle,
 	IconButton,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const BacketModal = () => {
@@ -50,7 +50,9 @@ const BacketModal = () => {
 				<DialogTitle>Корзина</DialogTitle>
 				<DialogContent>
 					{backet.map((item) => (
-						<div key={item.id}>{item.name}</div>
+						<div key={item.id}>
+							{item.name}: {item.count} шт.
+						</div>
 					))}
 				</DialogContent>
 				<DialogActions>

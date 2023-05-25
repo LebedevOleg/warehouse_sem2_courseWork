@@ -76,27 +76,24 @@ func (p *UserDB) GetUserById(id int) *sql.Row {
 	return row
 }
 
-func (p *UserDB) CreateOffer(u models.UserJwt, items []models.Item) error {
+func (p *UserDB) CreateOffer(u models.UserJwt, offer models.Offer) error {
 	var allPrice float32
 	allPrice = 0
-	for _, item := range items {
+	for _, item := range offer.Items {
 		allPrice += item.Price * float32(item.Count)
 	}
 	id := 0
-	err := p.Db.QueryRow(`INSERT INTO orders
-(date_start,  status, user_id, price)
-VALUES('$1, $3, $4, $5) RETURNING id`,
-		time.Now(), 0, u.Id, allPrice).Scan(&id)
+	err := p.Db.QueryRow(`INSERT INTO orders (date_start,  status, user_id, price, storage_id)
+		VALUES($1, $2, $3, $4, $5) RETURNING id`,
+		time.Now(), 0, u.Id, allPrice, offer.StorageId).Scan(&id)
 	if err != nil {
 		return errors.New("Error creating offer " + err.Error())
 	}
-	for _, item := range items {
-		_, err := p.Db.Exec(`INSERT INTO items_to_orders
-(order_id, item_id, item_count)
-VALUES($1, $2, $3)`,
+	for _, item := range offer.Items {
+		_, err := p.Db.Exec(`INSERT INTO items_to_orders (order_id, item_id, item_count) VALUES($1, $2, $3)`,
 			id, item.Id, item.Count)
 		if err != nil {
-			return errors.New("Error creating offer " + err.Error())
+			return errors.New("Ошибка в добавлении товара в промежуточную таблицу " + err.Error())
 		}
 	}
 	return nil

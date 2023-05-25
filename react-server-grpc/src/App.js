@@ -10,6 +10,7 @@ import ItemServicePage from "./pages/servicePages/itemsServicePage/itemServicePa
 import Loader from "./components/Loading/Loading";
 import DeliveryPage from "./pages/servicePages/deliveryPage/deliveryPage";
 import UserServicePage from "./pages/servicePages/usersServicePage/userServicePage";
+import BacketPage from "./pages/backetPage/backetPage";
 
 function App() {
 	const { token, userRole, login, isAdmin, logout, ready } = useAuth();
@@ -65,7 +66,7 @@ function App() {
 							path="/service"
 							element={<ServicePage />}
 						/>
-						<Route exact path="/backet" />
+						<Route exact path="/backet" element={<BacketPage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>

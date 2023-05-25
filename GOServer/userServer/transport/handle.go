@@ -77,7 +77,7 @@ func UpdateUserInfo(ctx echo.Context) error {
 func CreateOffer(ctx echo.Context) error {
 	jwt := ctx.Get("user").(*jwt.Token)
 	user := jwt.Claims.(*models.UserJwt)
-	offerItems := make([]models.Item, 0, 256)
+	offerItems := new(models.Offer)
 	err := ctx.Bind(&offerItems)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -89,6 +89,7 @@ func CreateOffer(ctx echo.Context) error {
 	return ctx.NoContent(http.StatusOK)
 }
 
+// !Логика авторизации
 // test auth
 func CheckAuth(ctx echo.Context) error {
 	user := ctx.Get("user").(*jwt.Token)
