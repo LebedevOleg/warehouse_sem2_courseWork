@@ -77,3 +77,64 @@ func CreateNewProvider(providerRequest models.Provider) error {
 	}
 	return nil
 }
+
+func GetAllOrders() ([]models.OrderJson, error) {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return nil, errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	orders, err := db.GetAllOrders()
+	if err != nil {
+		return nil, errors.New("failed to get orders: " + err.Error())
+	}
+	return orders, nil
+}
+
+func GetOrderDetails(id int) ([]models.DeliveryItem, error) {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return nil, errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	order, err := db.GetOrderDetails(id)
+	if err != nil {
+		return nil, errors.New("failed to get order: " + err.Error())
+	}
+	return order, nil
+}
+
+func GetUsersOrders(id int) ([]models.OrderJson, error) {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return nil, errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	orders, err := db.GetUserOrders(id)
+	if err != nil {
+		return nil, errors.New("failed to get orders: " + err.Error())
+	}
+	return orders, nil
+}
+
+func UpdateOrder(newOder models.OrderJson) error {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	err = db.UpdateOrder(newOder)
+	if err != nil {
+		return errors.New("failed to update order: " + err.Error())
+	}
+	return nil
+
+}
+
+func DeleteOrder(id int) error {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	err = db.DeleteOrder(id)
+	if err != nil {
+		return errors.New("failed to delete order: " + err.Error())
+	}
+	return nil
+}

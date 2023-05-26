@@ -1,6 +1,7 @@
 package transport
 
 import (
+	"fmt"
 	"net/http"
 	"practice2sem/itemsServer/models"
 	"practice2sem/itemsServer/services"
@@ -70,6 +71,7 @@ func GetAllStocks(ctx echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+	fmt.Println(stocks)
 	return ctx.JSON(http.StatusOK, echo.Map{"stocks": stocks})
 }
 

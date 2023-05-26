@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 
 import React from "react";
-import ItemChangeModal from "../modal/itemChange.modal";
 import StockChangeModal from "../modal/stockChange.modal";
 
 const StockServiceBlock = (props) => {
@@ -24,12 +23,9 @@ const StockServiceBlock = (props) => {
 				</Stack>
 			</TableCell>
 			<TableCell align="center">
-				{props.product.c_name}; Всего товаров на складе:{" "}
-				{props.product.dim}
+				Всего товаров на складе:{props.product.items_count}
 			</TableCell>
-			<TableCell align="center">
-				Цена за единицу: {props.product.pfu}
-			</TableCell>
+			<TableCell align="center">Адрес {props.product.address}</TableCell>
 			<TableCell align="center">
 				<StockChangeModal stock={props.product} />
 				<Button>Удалить</Button>

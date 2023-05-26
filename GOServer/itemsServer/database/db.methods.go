@@ -52,11 +52,20 @@ func (db *ItemDB) UpdateItem(i models.ItemJson) error {
 }
 
 func (db *ItemDB) AllStocks() (*sql.Rows, error) {
-	rows, err := db.Db.Query(`SELECT * FROM storages`)
+	rows, err := db.Db.Query(`SELECT s.id, s.name, s.address FROM storages s`)
 	if err != nil {
 		return nil, err
 	}
 	return rows, nil
+}
+func (db *ItemDB) StockItems(id int64) (int, error) {
+	count := 0
+	err := db.Db.QueryRow(`select sum(sti.item_count) from storage_to_items sti  where storage_id = $1`, id).Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+
 }
 
 // !todo: Переделать

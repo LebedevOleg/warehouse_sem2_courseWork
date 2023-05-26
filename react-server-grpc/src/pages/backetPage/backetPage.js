@@ -48,7 +48,7 @@ const BacketPage = () => {
 	}, []);
 
 	const handleOffer = () => {
-		b = JSON.parse(localStorage.getItem("backet"));
+		updateBacket();
 		axios.post(
 			"http://localhost:8000/createoffer",
 			{

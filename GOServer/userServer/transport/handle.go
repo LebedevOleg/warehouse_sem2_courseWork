@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"practice2sem/userServer/models"
 	"practice2sem/userServer/services"
+	"strconv"
 
 	"github.com/golang-jwt/jwt/v4"
 	echojwt "github.com/labstack/echo-jwt/v4"
@@ -119,6 +120,7 @@ func CheckLogin() echo.MiddlewareFunc {
 			user := ctx.Get("user").(*jwt.Token)
 			claims := user.Claims.(*models.UserJwt)
 			if claims.Email != "" {
+				ctx.Request().Header.Add("id", strconv.Itoa(claims.Id))
 				return next(ctx)
 			}
 			return ctx.String(http.StatusBadRequest, "Необходимо зайти в профиль")

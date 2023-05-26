@@ -17,9 +17,10 @@ type CategoryJson struct {
 }
 
 type StockJson struct {
-	Id      int64  `json:"id"`
-	Name    string `json:"name"`
-	Address string `json:"address"`
+	Id         int64  `json:"id"`
+	Name       string `json:"name"`
+	Address    string `json:"address"`
+	ItemsCount int    `json:"items_count"`
 }
 
 type PurchaseJson struct {

@@ -13,5 +13,9 @@ func main() {
 	server.AddRoute("/check/addtransaction", "POST", "", transport.CreateDelivery)
 	server.AddRoute("/check/addprovider", "POST", "", transport.CreateProvider)
 	server.AddRoute("/check/getfile", "GET", "", transport.GetFileTemp)
+
+	server.AddRoute("/check/getallorders", "GET", "", transport.GetAllOrders)
+	server.AddRoute("/api/getorders", "GET", "", transport.GetUsersOrders)
+	server.AddRoute("/api/getorderdetails", "POST", "", transport.GetOrderDetails)
 	server.Start()
 }

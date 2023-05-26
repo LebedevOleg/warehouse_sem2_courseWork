@@ -81,7 +81,7 @@ func (p *UserDB) CreateOffer(u models.UserJwt, offer models.Offer) error {
 	var allPrice float32
 	allPrice = 0
 	for _, item := range offer.Items {
-		allPrice += item.Price * float32(item.Count)
+		allPrice += item.PriceForUnit * float32(item.Count)
 	}
 	id := 0
 	err := p.Db.QueryRow(`INSERT INTO orders (date_start,  status, user_id, price, storage_id)

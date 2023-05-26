@@ -11,6 +11,9 @@ import Loader from "./components/Loading/Loading";
 import DeliveryPage from "./pages/servicePages/deliveryPage/deliveryPage";
 import UserServicePage from "./pages/servicePages/usersServicePage/userServicePage";
 import BacketPage from "./pages/backetPage/backetPage";
+import OrdersPage from "./pages/servicePages/ordersPage/ordersPage";
+import StockPage from "./pages/servicePages/stockServicePage/stockPage";
+import UserPage from "./pages/userPage/userPage";
 
 function App() {
 	const { token, userRole, login, isAdmin, logout, ready } = useAuth();
@@ -49,7 +52,7 @@ function App() {
 						<Route
 							exact
 							path="/service/stocks"
-							element={<ServicePage />}
+							element={<StockPage />}
 						/>
 						<Route
 							exact
@@ -67,6 +70,18 @@ function App() {
 							element={<ServicePage />}
 						/>
 						<Route exact path="/backet" element={<BacketPage />} />
+						<Route
+							exact
+							path="/service/orders"
+							element={<OrdersPage />}
+						/>
+						<Route
+							exact
+							path="/service/providers"
+							element={<ServicePage />}
+						/>
+						<Route exact path="/profile" element={<UserPage />} />
+						<Route path="*" element={<HomePage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>

@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 
 const BacketItem = ({ item, update }) => {
@@ -37,15 +37,15 @@ const BacketItem = ({ item, update }) => {
 	};
 
 	return (
-		<div key={item.id}>
+		<Stack spacing={2} direction="row" key={item.id}>
 			<Typography>{data.name}</Typography>
 			<Button onClick={() => minusItem(item.id)}>-</Button>
 			<Typography>{data.count}</Typography>
 			<Button onClick={() => addItem(item.id)}>+</Button>
 			<Typography>{data.dim}</Typography>
-			<Typography>{data.price * data.count}</Typography>
+			<Typography>{data.pfu * data.count}</Typography>
 			<Button onClick={() => deleteItem(item.id)}>Удалить</Button>
-		</div>
+		</Stack>
 	);
 };
 

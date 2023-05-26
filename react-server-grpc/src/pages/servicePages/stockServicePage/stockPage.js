@@ -9,15 +9,24 @@ import {
 	TableRow,
 	Typography,
 } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
-import { useAuth } from "../../../hooks/auth.hook";
+import axios from "axios";
+import React, { useCallback, useContext, useEffect } from "react";
+import { AuthContext } from "../../../context/auth.context";
 import StockServiceBlock from "./blocks/stock.block";
 
 const StockPage = () => {
-	const { token } = useAuth();
+	const auth = useContext(AuthContext);
 	const [stocks, setStocks] = React.useState([]);
 
-	const GetAllStocks = useCallback(async () => {}, []);
+	const GetAllStocks = useCallback(async () => {
+		await axios
+			.get("http://localhost:8000/getallstocks", {
+				headers: { Authorization: `Bearer ${auth.token}` },
+			})
+			.then((res) => {
+				setStocks(res.data.stocks);
+			});
+	}, []);
 
 	useEffect(() => {
 		GetAllStocks();
@@ -53,3 +62,5 @@ const StockPage = () => {
 		</>
 	);
 };
+
+export default StockPage;

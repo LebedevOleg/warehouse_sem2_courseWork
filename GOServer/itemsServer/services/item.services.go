@@ -108,14 +108,17 @@ func GetAllStocks() ([]models.StockJson, error) {
 		return nil, errors.New("failed to ret stock: " + err.Error())
 	}
 	stocks := make([]models.StockJson, 0, 256)
+	i := 0
 	for rows.Next() {
 		stocks = append(stocks, models.StockJson{})
 		err = rows.Scan(
-			&stocks[len(stocks)-1].Id, &stocks[len(stocks)-1].Name,
+			&stocks[i].Id, &stocks[i].Name, &stocks[i].Address,
 		)
 		if err != nil {
 			return nil, errors.New("failed to scan stock" + err.Error())
 		}
+		stocks[i].ItemsCount, err = db.StockItems(stocks[i].Id)
+		i++
 	}
 	return stocks, nil
 }

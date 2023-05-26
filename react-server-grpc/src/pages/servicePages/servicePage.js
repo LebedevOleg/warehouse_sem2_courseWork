@@ -17,7 +17,7 @@ const ServicePage = () => {
 				<Button
 					sx={{ display: "block" }}
 					onClick={() => {
-						window.location = "/shop";
+						window.location = "/service/providers";
 					}}
 				>
 					<Typography variant="h5">
@@ -35,7 +35,7 @@ const ServicePage = () => {
 				<Button
 					sx={{ display: "block" }}
 					onClick={() => {
-						window.location = "/shop";
+						window.location = "/service/stocks";
 					}}
 				>
 					<Typography variant="h5">Управление складами</Typography>
@@ -49,6 +49,14 @@ const ServicePage = () => {
 					<Typography variant="h5">
 						Управление пользователями
 					</Typography>
+				</Button>
+				<Button
+					sx={{ display: "block" }}
+					onClick={() => {
+						window.location = "/service/orders";
+					}}
+				>
+					<Typography variant="h5">Управление заказами</Typography>
 				</Button>
 			</Stack>
 		</>
