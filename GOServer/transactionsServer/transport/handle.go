@@ -82,6 +82,19 @@ func GetUsersOrders(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, echo.Map{"orders": orders})
 }
 
+func UpdateOrderStatus(ctx echo.Context) error {
+	order := new(models.OrderJson)
+	err := ctx.Bind(order)
+	if err != nil {
+		return err
+	}
+	err = services.UpdateOrderStatus(order.Id, order.Status)
+	if err != nil {
+		return err
+	}
+	return ctx.NoContent(http.StatusOK)
+}
+
 func GetOrderDetails(ctx echo.Context) error {
 	orderId := new(models.OrderJson)
 	err := ctx.Bind(orderId)

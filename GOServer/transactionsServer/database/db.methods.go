@@ -174,6 +174,15 @@ func (db *DeliveryDB) UpdateOrder(order models.OrderJson) error {
 	return nil
 }
 
+func (db *DeliveryDB) UpdateOrderStatus(id int, status int) error {
+	_, err := db.Db.Exec(`UPDATE orders SET date_finish = $1, status = $2 WHERE id = $3`, time.Now(), status, id)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func (db *DeliveryDB) DeleteOrder(id int) error {
 	_, err := db.Db.Exec(`DELETE FROM orders WHERE id = $1`, id)
 	if err != nil {

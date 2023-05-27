@@ -50,6 +50,8 @@ func main() {
 		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
 	server.AddAdminAuth("/check", "GET", "/getallorders",
 		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
+	server.AddAdminAuth("/check", "POST", "/updateorderstatus",
+		echo.WrapHandler(transactionsProxy), config, transport.CheckStatus("Администратор"))
 	server.AddAdminAuth("/api", "GET", "/getorders", echo.WrapHandler(transactionsProxy), config, transport.CheckLogin())
 	server.AddAdminAuth("/api", "GET", "/getorderdetails", echo.WrapHandler(transactionsProxy), config, transport.CheckLogin())
 

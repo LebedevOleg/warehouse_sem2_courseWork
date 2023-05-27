@@ -102,6 +102,19 @@ func GetOrderDetails(id int) ([]models.DeliveryItem, error) {
 	return order, nil
 }
 
+func UpdateOrderStatus(id int, status int) error {
+	db, err := database.GetPostgresql()
+	if err != nil {
+		return errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	err = db.UpdateOrderStatus(id, status)
+	if err != nil {
+		return errors.New("failed to update order status: " + err.Error())
+	}
+	return nil
+
+}
+
 func GetUsersOrders(id int) ([]models.OrderJson, error) {
 	db, err := database.GetPostgresql()
 	if err != nil {
