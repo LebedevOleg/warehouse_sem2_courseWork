@@ -22,6 +22,7 @@ func main() {
 	proxyServer.AddRoute("", "POST", "/createoffer", echo.WrapHandler(userProxy))
 	proxyServer.AddRoute("", "GET", "/getorders", echo.WrapHandler(userProxy))
 	proxyServer.AddRoute("", "POST", "/getorderdetails", echo.WrapHandler(userProxy))
+	proxyServer.AddRoute("", "GET", "/getuserinfo", echo.WrapHandler(userProxy))
 
 	//--------------------------------routes with auth------------------------------------------
 	itemAuthProxy := httputil.NewSingleHostReverseProxy(&url.URL{

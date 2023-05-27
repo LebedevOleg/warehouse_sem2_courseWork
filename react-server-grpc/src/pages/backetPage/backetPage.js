@@ -48,17 +48,19 @@ const BacketPage = () => {
 	}, []);
 
 	const handleOffer = () => {
-		updateBacket();
-		axios.post(
-			"http://localhost:8000/createoffer",
-			{
-				storage_id: storage,
-				items: backet,
-			},
-			{
-				headers: { Authorization: `Bearer ${auth.token}` },
-			}
-		);
+		let b = JSON.parse(localStorage.getItem("backet"));
+		axios
+			.post(
+				"http://localhost:8000/createoffer",
+				{
+					storage_id: storage,
+					items: b,
+				},
+				{
+					headers: { Authorization: `Bearer ${auth.token}` },
+				}
+			)
+			.then((res) => {});
 	};
 
 	useEffect(() => {

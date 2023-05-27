@@ -13,13 +13,25 @@ const UserPage = () => {
 		userType: "",
 	});
 	const [orders, setOrders] = React.useState([]);
-
+	const getUserInfo = useCallback(async () => {
+		await axios
+			.get("http://localhost:8000/getuserinfo", {
+				headers: { Authorization: `Bearer ${auth.token}` },
+			})
+			.then((res) => {
+				setUser(res.data);
+			});
+	}, []);
 	const getOrders = useCallback(async () => {
 		await axios
 			.get("http://localhost:8000/getorders", {
 				headers: { Authorization: `Bearer ${auth.token}` },
 			})
 			.then((res) => {
+				if (res.data.orders === null) {
+					setOrders([]);
+					return;
+				}
 				setOrders(res.data.orders);
 			});
 	}, []);
@@ -29,12 +41,14 @@ const UserPage = () => {
 
 	React.useEffect(() => {
 		getOrders();
-	}, [getOrders]);
+		getUserInfo();
+	}, [getOrders, getUserInfo]);
 
 	return (
 		<>
 			<Typography variant="h2">Страница пользователя</Typography>
 			<Typography variant="h4">Личные данные пользователя</Typography>
+			{user.name}
 			<Stack spacing={2}>
 				<Box>
 					Имя пользователя

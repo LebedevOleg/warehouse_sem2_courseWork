@@ -28,6 +28,7 @@ const NavBar = () => {
 			case "logout":
 				auth.logout();
 				setOpenProf(null);
+				localStorage.removeItem("backet");
 				window.location = "/";
 				break;
 			case "service":

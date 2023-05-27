@@ -8,15 +8,20 @@ const OrderBlock = ({ order }) => {
 	const [winOrder, setWinOrder] = React.useState(order);
 
 	const handleUpdateStatus = async () => {
-		await axios.post("http://localhost:8000/updateorderstatus", winOrder, {
-			headers: { Authorization: `Bearer ${auth.token}` },
-		});
+		winOrder.status = 1;
+		await axios
+			.post("http://localhost:8000/updateorderstatus", winOrder, {
+				headers: { Authorization: `Bearer ${auth.token}` },
+			})
+			.then((res) => {
+				window.location.reload();
+			});
 	};
 	return (
 		<Stack spacing={2} direction="row">
 			<Typography>{winOrder.id}</Typography>
 			<Typography>{winOrder.date_start}</Typography>
-			{(winOrder.date_end.Valid && "Не закрыт") || (
+			{(!winOrder.date_end.Valid && "Не закрыт") || (
 				<Typography>{winOrder.date_end.String}</Typography>
 			)}
 
@@ -25,7 +30,9 @@ const OrderBlock = ({ order }) => {
 			<Typography>{winOrder.address}</Typography>
 			<Typography>{winOrder.user_id}</Typography>
 			<Button>Подробнее</Button>
-			<Button onClick={handleUpdateStatus}>Закрыть</Button>
+			{(winOrder.status === 1 && <Button disabled>Закрыть</Button>) || (
+				<Button onClick={handleUpdateStatus}>Закрыть</Button>
+			)}
 			<Button>Удалить</Button>
 		</Stack>
 	);

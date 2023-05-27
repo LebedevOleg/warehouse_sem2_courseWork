@@ -103,8 +103,8 @@ func GetUserInfo(id int) (*models.UserJson, error) {
 		return nil, errors.New("get postgresql error\n" + err.Error())
 	}
 	row := db.GetUserById(id)
-	var user *models.UserJson
-	err = row.Scan(&user.Id, &user.Name, &user.Email, &user.Role, &user.Type)
+	user := new(models.UserJson)
+	err = row.Scan(&user.Id, &user.Name, &user.Email, &user.Role)
 	if err != nil {
 		return nil, errors.New("get user error\n" + err.Error())
 	}

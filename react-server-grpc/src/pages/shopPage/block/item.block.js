@@ -12,8 +12,14 @@ import React, { useContext } from "react";
 
 const ItemBlock = (props) => {
 	const handleClick = () => {
-		const backet = JSON.parse(localStorage.getItem("backet"));
-		backet.push(props.product);
+		const backet = JSON.parse(localStorage.getItem("backet")) || [];
+		if (backet.findIndex((item) => item.id === props.product.id) === -1) {
+			props.product.count = 1;
+			backet.push(props.product);
+		} else {
+			backet[backet.findIndex((item) => item.id === props.product.id)]
+				.count++;
+		}
 		localStorage.setItem("backet", JSON.stringify(backet));
 	};
 
