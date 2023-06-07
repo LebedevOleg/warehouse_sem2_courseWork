@@ -138,7 +138,9 @@ const DeliveryPage = () => {
 			</Box>
 			<Button>Добавить нового поставщика</Button>
 			<itemContext.Provider value={[selectedItems, setSelectedItems]}>
-				<FullFeaturedCrudGrid items={items} />
+				<FullFeaturedCrudGrid
+					items={items.sort((a, b) => a.id - b.id)}
+				/>
 			</itemContext.Provider>
 			<Box>
 				<Button onClick={handleCreateDelivery}>

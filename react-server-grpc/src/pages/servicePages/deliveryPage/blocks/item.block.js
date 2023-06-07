@@ -31,20 +31,22 @@ function SelectEditInputCell(props) {
 	};
 
 	return (
-		<Select
-			value={value}
-			onChange={handleChange}
-			size="small"
-			sx={{ height: 1 }}
-			native
-			autoFocus
-		>
-			{props.colDef.data_items.map((item) => (
-				<option key={item.id} value={item.name}>
-					{item.name}
-				</option>
-			))}
-		</Select>
+		<>
+			<Select
+				value={value}
+				onChange={handleChange}
+				size="small"
+				sx={{ height: 1 }}
+				native
+				autoFocus
+			>
+				{props.colDef.data_items.map((item) => (
+					<option key={item.id} value={item.name + " " + item.id}>
+						{item.name}
+					</option>
+				))}
+			</Select>
+		</>
 	);
 }
 
@@ -65,7 +67,6 @@ SelectEditInputCell.propTypes = {
 };
 
 const renderSelectEditInputCell = (params) => {
-	console.log(params);
 	return <SelectEditInputCell {...params} />;
 };
 
@@ -122,7 +123,6 @@ export default function FullFeaturedCrudGrid(props) {
 			...rowModesModel,
 			[id]: { mode: GridRowModes.View },
 		});
-		console.log(id, name, count);
 	};
 
 	const handleDeleteClick = (id) => () => {

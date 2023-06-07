@@ -45,9 +45,10 @@ func (db *DeliveryDB) CreateNewDelivery(deliveryRequest models.DeliveryRequest) 
 	items := make([]models.ItemTemp, 0, len(deliveryRequest.Items))
 	for _, item := range deliveryRequest.Items {
 		err = db.Db.QueryRow(
-			`SELECT price_for_unit FROM items WHERE name = $1`,
-			item.Name).Scan(
+			`SELECT price_for_unit, name FROM items WHERE id = $1`,
+			item.Id).Scan(
 			&item.Price,
+			&item.Name,
 		)
 		if err != nil {
 			return nil, err

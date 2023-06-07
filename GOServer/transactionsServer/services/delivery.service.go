@@ -4,6 +4,8 @@ import (
 	"errors"
 	"practice2sem/transactionsServer/database"
 	"practice2sem/transactionsServer/models"
+	"strconv"
+	"strings"
 )
 
 func GetAllProviders() ([]models.Provider, error) {
@@ -58,6 +60,11 @@ func CreateNewDelivery(deliveryRequest models.DeliveryRequest) (*models.Delivery
 	db, err := database.GetPostgresql()
 	if err != nil {
 		return nil, errors.New("failed to connect to postgresql: " + err.Error())
+	}
+	for id, item := range deliveryRequest.Items {
+		item.Id, _ = strconv.Atoi(strings.Split(item.Name, " ")[1])
+		item.Name = strings.Split(item.Name, " ")[0]
+		deliveryRequest.Items[id] = item
 	}
 	deliveryData, err := db.CreateNewDelivery(deliveryRequest)
 	if err != nil {
